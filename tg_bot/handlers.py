@@ -191,10 +191,15 @@ async def input_address(update: Update, context: CallbackContext):
 
 
 async def validate_address(update: Update, context: CallbackContext):
-    phone = update.message.text
-    if validators.is_phone(phone):
-        context.user_data['phone'] = phone
-
+    address = update.message.text
+    if validators.is_phone(address):
+        context.user_data['address'] = address
+        # Заготовка на будущее, чтобы во время заказа торта можно было
+        # использовать эту же функцию
+        mode = context.user_data.get('mode')
+        if mode == 'make_order':
+            return
+        await confirm_signup(update, context)
         return State.CONFIRM_SIGNUP
     else:
         await context.bot.send_message(
@@ -204,6 +209,43 @@ async def validate_address(update: Update, context: CallbackContext):
         )
 
         return State.INPUT_ADDRESS
+
+
+async def confirm_signup(update: Update, context: CallbackContext):
+    name = context.user_data.get('full_name')
+    phone = context.user_data.get('phone')
+    address = context.user_data.get('address')
+    
+    text = strings.get_confirm_signup(
+        name,
+        phone,
+        address
+    )
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+            reply_markup=keyboards.get_confirm_registration()
+    )
+
+
+async def signup_customer(update: Update, context: CallbackContext):
+    tg_id = update.effective_chat.id
+    name = context.user_data.get('full_name')
+    phone = context.user_data.get('phone')
+    address = context.user_data.get('address')
+    add_customer(tg_id, name, address, phone)
+
+    text = strings.get_signup_complete(name)
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+            reply_markup=keyboards.get_back_to_menu()
+    )
+    return State.MAIN_MENU
 
 
 async def delete_user(update: Update, context: CallbackContext):
@@ -254,6 +296,10 @@ def get_handlers():
             ],
             State.INPUT_ADDRESS: [
                 MessageHandler(filters.TEXT, validate_address)
+            ],
+            State.CONFIRM_SIGNUP: [
+                CallbackQueryHandler(signup_customer, Callback.YES),
+                CallbackQueryHandler(input_name, Callback.REDO)
             ]
         },
         fallbacks=[
