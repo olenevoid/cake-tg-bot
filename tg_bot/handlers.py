@@ -25,6 +25,7 @@ from demo_data.demo_db import (
 
 class State(Enum):
     MAIN_MENU = auto()
+    REGISTRATION = auto()
     PERSONAL_DATA_PROCESSING = auto()
     INPUT_NAME = auto()
     INPUT_ADDRESS = auto()
@@ -113,7 +114,7 @@ async def start_registration(update: Update, context: CallbackContext):
         parse_mode='HTML'
     )
 
-    return State.PERSONAL_DATA_PROCESSING
+    return State.REGISTRATION
 
 
 async def send_personal_data_consent(update: Update, context: CallbackContext):
@@ -192,7 +193,7 @@ async def input_address(update: Update, context: CallbackContext):
 
 async def validate_address(update: Update, context: CallbackContext):
     address = update.message.text
-    if validators.is_phone(address)[0]:
+    if validators.is_address(address)[0]:
         context.user_data['address'] = address
         # Заготовка на будущее, чтобы во время заказа торта можно было
         # использовать эту же функцию
@@ -256,6 +257,48 @@ async def delete_user(update: Update, context: CallbackContext):
 
 
 def get_handlers():
+
+    registration_level = ConversationHandler(
+        entry_points=[
+            CallbackQueryHandler(main_menu, get_pattern(Callback.NO)),
+            CallbackQueryHandler(input_name, get_pattern(Callback.YES)),
+            CallbackQueryHandler(
+                send_personal_data_consent,
+                Callback.DOWNLOAD
+            )
+        ],
+        states={
+            State.PERSONAL_DATA_PROCESSING: [
+                CallbackQueryHandler(main_menu, get_pattern(Callback.NO)),
+                CallbackQueryHandler(input_name, get_pattern(Callback.YES)),
+                CallbackQueryHandler(
+                    send_personal_data_consent,
+                    Callback.DOWNLOAD
+                )
+            ],
+            State.INPUT_NAME: [
+                MessageHandler(filters.TEXT, validate_name),
+            ],
+            State.INPUT_PHONE: [
+                MessageHandler(filters.TEXT, validate_phone)
+            ],
+            State.INPUT_ADDRESS: [
+                MessageHandler(filters.TEXT, validate_address)
+            ],
+            State.CONFIRM_SIGNUP: [
+                CallbackQueryHandler(signup_customer, Callback.YES),
+                CallbackQueryHandler(input_name, Callback.REDO)
+            ]
+        },
+        map_to_parent={
+            State.MAIN_MENU: State.MAIN_MENU
+        },
+        fallbacks=[
+            CommandHandler("start", start),
+            CallbackQueryHandler(main_menu, get_pattern(Callback.MAIN_MENU))
+        ]
+    )
+
     return ConversationHandler(
         entry_points=[
             CommandHandler("start", start),
@@ -280,27 +323,8 @@ def get_handlers():
                     get_pattern(Callback.SIGNUP)
                 ),
             ],
-            State.PERSONAL_DATA_PROCESSING: [
-                CallbackQueryHandler(main_menu, get_pattern(Callback.NO)),
-                CallbackQueryHandler(input_name, get_pattern(Callback.YES)),
-                CallbackQueryHandler(
-                    send_personal_data_consent,
-                    Callback.DOWNLOAD
-                )
-            ],
-            State.INPUT_NAME: [
-                MessageHandler(filters.TEXT, validate_name),
-            ],
-            State.INPUT_PHONE: [
-                MessageHandler(filters.TEXT, validate_phone)
-            ],
-            State.INPUT_ADDRESS: [
-                MessageHandler(filters.TEXT, validate_address)
-            ],
-            State.CONFIRM_SIGNUP: [
-                CallbackQueryHandler(signup_customer, Callback.YES),
-                CallbackQueryHandler(input_name, Callback.REDO)
-            ]
+            State.REGISTRATION: [registration_level]
+
         },
         fallbacks=[
             CommandHandler("start", start),
