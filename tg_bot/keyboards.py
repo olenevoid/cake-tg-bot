@@ -66,5 +66,31 @@ def get_back_to_menu():
     return InlineKeyboardMarkup(buttons)
 
 
+def get_personal_data_keyboard():
+    buttons = [
+        CallbackButton(
+            'Да',
+            Callback.YES
+        ),
+        CallbackButton(
+            'Нет',
+            Callback.NO
+        )
+    ]
+    
+    buttons = split_to_sublists(buttons, 1)
+    
+    buttons.append(
+        [
+            CallbackButton(
+                'Скачать',
+                Callback.DOWNLOAD
+            )
+        ]
+    )
+    
+    return InlineKeyboardMarkup(buttons)
+    
+
 def get_my_orders():
     pass
