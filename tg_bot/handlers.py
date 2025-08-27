@@ -113,6 +113,14 @@ async def start_registration(update: Update, context: CallbackContext):
     return State.PERSONAL_DATA_PROCESSING
 
 
+async def send_personal_data_consent(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    
+    #TODO: Добавить отправку файла с соглашением персональных данных
+    
+    return State.PERSONAL_DATA_PROCESSING
+
+
 async def input_name(update: Update, context: CallbackContext):
     text = strings.PLEASE_INPUT_NAME
 
@@ -181,7 +189,11 @@ def get_handlers():
             ],
             State.PERSONAL_DATA_PROCESSING: [
                 CallbackQueryHandler(main_menu, get_pattern(Callback.NO)),
-                CallbackQueryHandler(input_name, get_pattern(Callback.YES))
+                CallbackQueryHandler(input_name, get_pattern(Callback.YES)),
+                CallbackQueryHandler(
+                    send_personal_data_consent,
+                    Callback.DOWNLOAD
+                )
             ],
             State.INPUT_NAME: [
                 MessageHandler(filters.TEXT, validate_name),
