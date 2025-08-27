@@ -69,7 +69,6 @@ ADDRESS_IS_INCORRECT = (
 
 ADDRESS_IS_CORRECT = (
     'Адрес правильный '
-    'дальше подтверждение'
 )
 
 
