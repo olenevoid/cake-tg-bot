@@ -15,7 +15,7 @@ def get_registration_conversation_handler():
     return ConversationHandler(
         entry_points=[
             CallbackQueryHandler(
-                main_menu.main_menu,
+                main_menu.show_main_menu,
                 get_pattern(Callback.NO)
             ),
             CallbackQueryHandler(
@@ -30,7 +30,7 @@ def get_registration_conversation_handler():
         states={
             State.PERSONAL_DATA_PROCESSING: [
                 CallbackQueryHandler(
-                    main_menu.main_menu,
+                    main_menu.show_main_menu,
                     get_pattern(Callback.NO)
                 ),
                 CallbackQueryHandler(
@@ -65,7 +65,7 @@ def get_registration_conversation_handler():
         fallbacks=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.main_menu,
+                main_menu.show_main_menu,
                 get_pattern(Callback.MAIN_MENU)
             )
         ]
@@ -80,7 +80,7 @@ def get_main_conversation_handler():
         entry_points=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.main_menu,
+                main_menu.show_main_menu,
                 get_pattern(Callback.MAIN_MENU)
             )
         ],
@@ -109,7 +109,7 @@ def get_main_conversation_handler():
         fallbacks=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.main_menu,
+                main_menu.show_main_menu,
                 get_pattern(Callback.MAIN_MENU)
             ),
             CallbackQueryHandler(

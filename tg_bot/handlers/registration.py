@@ -157,4 +157,4 @@ async def delete_user(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     tg_id = update.effective_chat.id
     delete_user_from_db(tg_id)
-    await main_menu.main_menu(update, context)
+    await main_menu.show_main_menu(update, context)

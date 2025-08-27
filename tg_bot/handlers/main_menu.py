@@ -25,7 +25,7 @@ async def start(update: Update, context: CallbackContext):
     return State.MAIN_MENU
 
 
-async def main_menu(update: Update, context: CallbackContext):
+async def show_main_menu(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     tg_id = update.effective_chat.id
     user = find_user(tg_id)
