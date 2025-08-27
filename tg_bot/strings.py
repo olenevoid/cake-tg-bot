@@ -24,6 +24,23 @@ PERSONAL_DATA_PROCESSING_CONSENT = (
 )
 
 
+PLEASE_INPUT_NAME = (
+    'Введите ваше имя'
+)
+
+
+FULL_NAME_IS_INCORRECT = (
+    'Текст при неверно введеном имени'
+)
+
+
+FULL_NAME_IS_CORRECT = (
+    'Текст при правильно введеном имени '
+    'и инструкция для следующего шага '
+    'с вводом номера телефона'
+)
+
+
 def get_main_menu(user: User):
     text = (
         'Текст главного меню\n'
