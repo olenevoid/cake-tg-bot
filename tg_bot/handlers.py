@@ -189,6 +189,37 @@ async def validate_phone(update: Update, context: CallbackContext):
     return state
 
 
+async def input_address(update: Update, context: CallbackContext):
+    text = strings.INPUT_YOUR_ADDRESS
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+    )
+
+    return State.INPUT_PHONE
+
+
+async def validate_address(update: Update, context: CallbackContext):
+    phone = update.message.text
+    if validators.is_phone(phone):
+        text = strings.ADDRESS_IS_CORRECT
+        context.user_data['phone'] = phone
+        state = State.CONFIRM_SIGNUP
+    else:
+        text = strings.ADDRESS_IS_INCORRECT
+        state = State.INPUT_ADDRESS
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+    )
+
+    return state
+
+
 async def delete_user(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     tg_id = update.effective_chat.id
@@ -235,6 +266,8 @@ def get_handlers():
             State.INPUT_PHONE: [
                 MessageHandler(filters.TEXT, validate_phone)
             ],
+            State.INPUT_ADDRESS: [
+                MessageHandler(filters.TEXT, validate_address)
             ]
         },
         fallbacks=[
