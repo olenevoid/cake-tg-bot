@@ -91,6 +91,32 @@ def get_personal_data_keyboard():
     
     return InlineKeyboardMarkup(buttons)
     
+    
+def get_confirm_registration():
+    buttons = [
+        CallbackButton(
+            'Да',
+            Callback.YES
+        ),
+        CallbackButton(
+            'Изменить',
+            Callback.REDO
+        ),
+    ]
+    
+    buttons = split_to_sublists(buttons, 2)
+    
+    buttons.append(
+        [
+            CallbackButton(
+                'В меню',
+                Callback.MAIN_MENU
+            )
+        ]
+    )
+    
+    return InlineKeyboardMarkup(buttons)
+
 
 def get_my_orders():
     pass
