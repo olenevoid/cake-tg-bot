@@ -13,13 +13,14 @@ import tg_bot.strings as strings
 import tg_bot.settings as settings
 from enum import Enum, auto
 
-from demo_data.demo_db import (get_user,
-                               get_toppings,
-                               get_berries,
-                               get_decor,
-                               find_user,
-                               add_user,
-                               delete_user_from_db
+from demo_data.demo_db import (
+    get_user,
+    get_toppings,
+    get_berries,
+    get_decor,
+    find_user,
+    add_user,
+    delete_user_from_db
 )
 
 
