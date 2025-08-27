@@ -60,8 +60,14 @@ def find_user(tg_id: int) -> models.User | None:
     return None
 
 
-def add_user(tg_id: int):
-    role = models.Role(1, "Customer")
+#TODO: Удалить значения по умолчанию ближе к концу разработки
+def add_customer(
+    tg_id: int,
+    full_name: str = 'Иван Иванов',
+    address: str = 'ул. Ленина 10',
+    phone: str = '89001234567'
+):
+    role = models.Role(1, 'Customer')
     if not users:
         pk = 0
     else:
@@ -70,10 +76,10 @@ def add_user(tg_id: int):
     user = models.User(
         pk,
         tg_id,
-        "Иванов Иван Иванович",
+        full_name,
         role,
-        "ул. Ленина 10",
-        "89224355343"
+        address,
+        phone
     )
 
     if not find_user(tg_id):

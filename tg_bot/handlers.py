@@ -14,12 +14,11 @@ import tg_bot.settings as settings
 from enum import Enum, auto
 
 from demo_data.demo_db import (
-    get_user,
     get_toppings,
     get_berries,
     get_decor,
     find_user,
-    add_user,
+    add_customer,
     delete_user_from_db
 )
 
@@ -44,7 +43,6 @@ async def start(update: Update, context: CallbackContext):
 
 async def main_menu(update: Update, context: CallbackContext):
     await update.callback_query.answer()
-    #user = get_user()
     tg_id = update.effective_chat.id
     user = find_user(tg_id)
     text = strings.get_main_menu(user)
@@ -103,7 +101,7 @@ async def start_registration(update: Update, context: CallbackContext):
 
     text = strings.PERSONAL_DATA_PROCESSING_CONSENT
     tg_id = update.effective_chat.id
-    add_user(tg_id)
+    add_customer(tg_id)
 
     await update.callback_query.edit_message_text(
         text,
