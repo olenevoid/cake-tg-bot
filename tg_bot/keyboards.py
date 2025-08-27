@@ -78,7 +78,7 @@ def get_personal_data_keyboard():
         )
     ]
     
-    buttons = split_to_sublists(buttons, 1)
+    buttons = split_to_sublists(buttons, 2)
     
     buttons.append(
         [
