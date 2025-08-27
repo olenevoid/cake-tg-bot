@@ -138,7 +138,7 @@ async def input_name(update: Update, context: CallbackContext):
 
 async def validate_name(update: Update, context: CallbackContext):
     full_name = update.message.text
-    if validators.is_valid_name(full_name):
+    if validators.is_valid_name(full_name)[0]:
         context.user_data['full_name'] = full_name
         await input_phone(update, context)
         return State.INPUT_PHONE
@@ -165,7 +165,7 @@ async def input_phone(update: Update, context: CallbackContext):
 
 async def validate_phone(update: Update, context: CallbackContext):
     phone = update.message.text
-    if validators.is_phone(phone):
+    if validators.is_phone(phone)[0]:
         context.user_data['phone'] = phone
         await input_address(update, context)
         return State.INPUT_ADDRESS
@@ -192,7 +192,7 @@ async def input_address(update: Update, context: CallbackContext):
 
 async def validate_address(update: Update, context: CallbackContext):
     address = update.message.text
-    if validators.is_phone(address):
+    if validators.is_phone(address)[0]:
         context.user_data['address'] = address
         # Заготовка на будущее, чтобы во время заказа торта можно было
         # использовать эту же функцию
@@ -215,7 +215,7 @@ async def confirm_signup(update: Update, context: CallbackContext):
     name = context.user_data.get('full_name')
     phone = context.user_data.get('phone')
     address = context.user_data.get('address')
-    
+
     text = strings.get_confirm_signup(
         name,
         phone,
