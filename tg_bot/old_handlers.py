@@ -21,8 +21,10 @@ from demo_data.demo_db import (
     add_customer,
     delete_user_from_db
 )
+from tg_bot.handlers.states import State
 
 
+'''
 class State(Enum):
     MAIN_MENU = auto()
     REGISTRATION = auto()
@@ -32,7 +34,7 @@ class State(Enum):
     INPUT_PHONE = auto()
     CONFIRM_SIGNUP = auto()
 
-
+'''
 async def start(update: Update, context: CallbackContext):
     await update.message.delete()
     tg_id = update.effective_chat.id
