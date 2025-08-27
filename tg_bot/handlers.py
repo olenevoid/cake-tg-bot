@@ -139,23 +139,18 @@ async def input_name(update: Update, context: CallbackContext):
 async def validate_name(update: Update, context: CallbackContext):
     full_name = update.message.text
     if validators.is_valid_name(full_name):
-        text = strings.FULL_NAME_IS_CORRECT
         context.user_data['full_name'] = full_name
-        state = State.INPUT_PHONE
-        keyboard = None
+        await input_phone(update, context)
+        return State.INPUT_PHONE
+
     else:
-        text = strings.FULL_NAME_IS_INCORRECT
-        state = State.INPUT_NAME
-        keyboard = None
+        await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=strings.FULL_NAME_IS_INCORRECT,
+                parse_mode='HTML',
+        )
 
-    await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=text,
-            parse_mode='HTML',
-            reply_markup=keyboard
-    )
-
-    return state
+        return State.INPUT_NAME
 
 
 async def input_phone(update: Update, context: CallbackContext):
@@ -167,26 +162,22 @@ async def input_phone(update: Update, context: CallbackContext):
             parse_mode='HTML',
     )
 
-    return State.INPUT_PHONE
-
 
 async def validate_phone(update: Update, context: CallbackContext):
     phone = update.message.text
     if validators.is_phone(phone):
-        text = strings.PHONE_IS_CORRECT
         context.user_data['phone'] = phone
-        state = State.INPUT_ADDRESS
+        await input_address(update, context)
+        return State.INPUT_ADDRESS
+
     else:
-        text = strings.PHONE_IS_INCORRECT
-        state = State.INPUT_PHONE
+        await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=strings.PHONE_IS_INCORRECT,
+                parse_mode='HTML',
+        )
 
-    await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=text,
-            parse_mode='HTML',
-    )
-
-    return state
+        return State.INPUT_PHONE
 
 
 async def input_address(update: Update, context: CallbackContext):
@@ -198,26 +189,21 @@ async def input_address(update: Update, context: CallbackContext):
             parse_mode='HTML',
     )
 
-    return State.INPUT_PHONE
-
 
 async def validate_address(update: Update, context: CallbackContext):
     phone = update.message.text
     if validators.is_phone(phone):
-        text = strings.ADDRESS_IS_CORRECT
         context.user_data['phone'] = phone
-        state = State.CONFIRM_SIGNUP
+
+        return State.CONFIRM_SIGNUP
     else:
-        text = strings.ADDRESS_IS_INCORRECT
-        state = State.INPUT_ADDRESS
+        await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=strings.ADDRESS_IS_INCORRECT,
+                parse_mode='HTML',
+        )
 
-    await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=text,
-            parse_mode='HTML',
-    )
-
-    return state
+        return State.INPUT_ADDRESS
 
 
 async def delete_user(update: Update, context: CallbackContext):
