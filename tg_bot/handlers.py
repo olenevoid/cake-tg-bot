@@ -12,7 +12,7 @@ from tg_bot.callbacks import Callback, parse_callback_data_string, get_pattern
 import tg_bot.strings as strings
 import tg_bot.settings as settings
 from enum import Enum, auto
-
+import tg_bot.validators as validators
 from demo_data.demo_db import (
     get_toppings,
     get_berries,
@@ -26,6 +26,7 @@ from demo_data.demo_db import (
 class State(Enum):
     MAIN_MENU = auto()
     PERSONAL_DATA_PROCESSING = auto()
+    INPUT_NAME = auto()
 
 
 async def start(update: Update, context: CallbackContext):
@@ -101,15 +102,49 @@ async def start_registration(update: Update, context: CallbackContext):
 
     text = strings.PERSONAL_DATA_PROCESSING_CONSENT
     tg_id = update.effective_chat.id
-    add_customer(tg_id)
+    # add_customer(tg_id)
 
     await update.callback_query.edit_message_text(
         text,
-        reply_markup=keyboards.get_back_to_menu(),
+        reply_markup=keyboards.get_personal_data_keyboard(),
         parse_mode='HTML'
     )
 
     return State.PERSONAL_DATA_PROCESSING
+
+
+async def input_name(update: Update, context: CallbackContext):
+    text = strings.PLEASE_INPUT_NAME
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+    )
+    
+    return State.INPUT_NAME
+
+
+async def validate_name(update: Update, context: CallbackContext):
+    full_name = update.message.text
+    if validators.is_valid_name(full_name):
+        text = strings.FULL_NAME_IS_CORRECT
+        context.user_data['full_name'] = full_name
+        state = State.MAIN_MENU
+        keyboard = None
+    else:
+        text = strings.FULL_NAME_IS_INCORRECT
+        state = State.INPUT_NAME
+        keyboard = None
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+            reply_markup=keyboard
+    )
+
+    return state
 
 
 async def delete_user(update: Update, context: CallbackContext):
@@ -145,7 +180,11 @@ def get_handlers():
                 ),
             ],
             State.PERSONAL_DATA_PROCESSING: [
-
+                CallbackQueryHandler(main_menu, get_pattern(Callback.NO)),
+                CallbackQueryHandler(input_name, get_pattern(Callback.YES))
+            ],
+            State.INPUT_NAME: [
+                MessageHandler(filters.TEXT, validate_name),
             ]
         },
         fallbacks=[
