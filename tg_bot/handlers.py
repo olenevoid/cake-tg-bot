@@ -125,14 +125,14 @@ async def send_personal_data_consent(update: Update, context: CallbackContext):
 
 
 async def input_name(update: Update, context: CallbackContext):
-    text = strings.PLEASE_INPUT_NAME
+    text = strings.INPUT_YOUR_NAME
 
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=text,
             parse_mode='HTML',
     )
-    
+
     return State.INPUT_NAME
 
 
@@ -141,7 +141,7 @@ async def validate_name(update: Update, context: CallbackContext):
     if validators.is_valid_name(full_name):
         text = strings.FULL_NAME_IS_CORRECT
         context.user_data['full_name'] = full_name
-        state = State.MAIN_MENU
+        state = State.INPUT_PHONE
         keyboard = None
     else:
         text = strings.FULL_NAME_IS_INCORRECT
@@ -153,6 +153,37 @@ async def validate_name(update: Update, context: CallbackContext):
             text=text,
             parse_mode='HTML',
             reply_markup=keyboard
+    )
+
+    return state
+
+
+async def input_phone(update: Update, context: CallbackContext):
+    text = strings.INPUT_YOUR_PHONE
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+    )
+
+    return State.INPUT_PHONE
+
+
+async def validate_phone(update: Update, context: CallbackContext):
+    phone = update.message.text
+    if validators.is_phone(phone):
+        text = strings.PHONE_IS_CORRECT
+        context.user_data['phone'] = phone
+        state = State.INPUT_ADDRESS
+    else:
+        text = strings.PHONE_IS_INCORRECT
+        state = State.INPUT_PHONE
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
     )
 
     return state
@@ -200,6 +231,10 @@ def get_handlers():
             ],
             State.INPUT_NAME: [
                 MessageHandler(filters.TEXT, validate_name),
+            ],
+            State.INPUT_PHONE: [
+                MessageHandler(filters.TEXT, validate_phone)
+            ],
             ]
         },
         fallbacks=[
