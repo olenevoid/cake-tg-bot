@@ -15,6 +15,7 @@ class Callback(StrEnum):
     ALL_ORDERS = auto()
     YES = auto()
     NO = auto()
+    REDO = auto()
     DOWNLOAD = auto()
     DELETE_USER = auto()
 
