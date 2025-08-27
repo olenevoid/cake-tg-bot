@@ -27,6 +27,9 @@ class State(Enum):
     MAIN_MENU = auto()
     PERSONAL_DATA_PROCESSING = auto()
     INPUT_NAME = auto()
+    INPUT_ADDRESS = auto()
+    INPUT_PHONE = auto()
+    CONFIRM_SIGNUP = auto()
 
 
 async def start(update: Update, context: CallbackContext):
