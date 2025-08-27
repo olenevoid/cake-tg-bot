@@ -24,7 +24,7 @@ PERSONAL_DATA_PROCESSING_CONSENT = (
 )
 
 
-PLEASE_INPUT_NAME = (
+INPUT_YOUR_NAME = (
     'Введите ваше имя'
 )
 
