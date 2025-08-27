@@ -1,5 +1,5 @@
 from telegram.ext import ApplicationBuilder
-from tg_bot.handlers.state_machine import get_main_conversation_handler
+from tg_bot.handlers.state_machines import get_main_conversation_handler
 from tg_bot.settings import TG_BOT_TOKEN
 
 
