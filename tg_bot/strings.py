@@ -72,6 +72,24 @@ ADDRESS_IS_CORRECT = (
 )
 
 
+def get_confirm_signup(full_name: str, phone: str, address: str):
+    text = (
+        f'{full_name}\n'
+        f'{phone}\n'
+        f'{address}\n'
+        'Подтверждаете регистрацию?'
+    )
+
+    return text
+
+
+def get_signup_complete(full_name: str):
+    text = (
+        f'Пользователь {full_name} зарегистрирован'
+    )
+
+    return text
+
 
 def get_main_menu(user: User):
     text = (
