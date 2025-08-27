@@ -2,4 +2,16 @@
 
 
 def is_phone(phone: str):
+    #TODO: Добавить проверку, что введенный номер является корректным
+    return True
+
+
+def is_valid_name(full_name: str):
+    #TODO: Добавить проверку имени. Вполне возможно хватит проверки
+    # на количество слов и отсутствие цифр
+    return True
+
+
+def is_address(address: str):
+    #TODO: Наверное, можно вообще ничего не проверять, но пусть пока будет
     return True
