@@ -41,6 +41,22 @@ FULL_NAME_IS_CORRECT = (
 )
 
 
+INPUT_YOUR_PHONE = (
+    'Введите телефон'
+)
+
+
+PHONE_IS_INCORRECT = (
+    'Номер неправильный'
+)
+
+
+PHONE_IS_CORRECT = (
+    'Номер правильный '
+    'дальше просим ввести адрес'
+)
+
+
 def get_main_menu(user: User):
     text = (
         'Текст главного меню\n'
