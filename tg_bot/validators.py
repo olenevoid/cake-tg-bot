@@ -3,15 +3,15 @@
 
 def is_phone(phone: str):
     #TODO: Добавить проверку, что введенный номер является корректным
-    return True
+    return len(phone) > 2
 
 
 def is_valid_name(full_name: str):
     #TODO: Добавить проверку имени. Вполне возможно хватит проверки
     # на количество слов и отсутствие цифр
-    return True
+    return len(full_name) > 2
 
 
 def is_address(address: str):
     #TODO: Наверное, можно вообще ничего не проверять, но пусть пока будет
-    return True
+    return len(address) > 2
