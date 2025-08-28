@@ -9,6 +9,8 @@ PARAM_SEPARATOR = ','
 class Callback(StrEnum):
     MAIN_MENU = auto()
     ORDER_CAKE = auto()
+    SHOW_CAKES = auto()
+    SHOW_CAKE = auto()
     MY_ORDERS = auto()
     SHOW_PRICELIST = auto()
     SIGNUP = auto()

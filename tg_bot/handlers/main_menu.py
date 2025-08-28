@@ -4,9 +4,9 @@ from telegram.ext import CallbackContext
 import tg_bot.strings as strings
 import tg_bot.settings as settings
 from demo_data.demo_db import (
-    get_toppings,
-    get_berries,
-    get_decor,
+    _old_get_toppings,
+    _old_get_berries,
+    _old_get_decor,
     find_user,
 )
 from tg_bot.handlers.states import State
@@ -46,9 +46,11 @@ async def order_cake(update: Update, context: CallbackContext):
 
     await update.callback_query.edit_message_text(
         text,
-        reply_markup=keyboards.get_back_to_menu(),
+        reply_markup=keyboards.get_order_cake(),
         parse_mode='HTML'
     )
+    
+    return State.ORDER_CAKE
 
 
 async def my_orders(update: Update, context: CallbackContext):
@@ -65,9 +67,9 @@ async def my_orders(update: Update, context: CallbackContext):
 
 async def show_pricelist(update: Update, context: CallbackContext):
     await update.callback_query.answer()
-    toppings = get_toppings()
-    decor = get_decor()
-    berries = get_berries()
+    toppings = _old_get_toppings()
+    decor = _old_get_decor()
+    berries = _old_get_berries()
 
     text = strings.show_ingredients('Топпинги', toppings)
     text += strings.show_ingredients('Декор', decor)

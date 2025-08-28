@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardMarkup
 from tg_bot.callbacks import Callback, CallbackButton
 from utils import split_to_sublists
-from demo_data.models import User
+from demo_data.models import User, Cake
 
 
 def get_main_menu(user: User):
@@ -115,6 +115,58 @@ def get_confirm_registration():
         ]
     )
     
+    return InlineKeyboardMarkup(buttons)
+
+
+def get_order_cake():
+    buttons = [
+        CallbackButton(
+            'Готовые торты',
+            Callback.SHOW_CAKES
+        ),
+        CallbackButton(
+            'Заказать новый (не работает)',
+            Callback.MAIN_MENU
+        )
+    ]
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append(
+        [
+            CallbackButton(
+                'В меню',
+                Callback.MAIN_MENU
+            )
+        ]
+    )
+
+    return InlineKeyboardMarkup(buttons)
+
+
+def get_select_cake(cakes: list[Cake], cakes_per_row: int = 2):
+    
+    buttons = []
+    
+    for cake in cakes:
+        button = CallbackButton(
+            cake.title,
+            Callback.SHOW_CAKE,
+            cake_pk=cake.pk
+        )
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, cakes_per_row)
+
+    buttons.append(
+        [
+            CallbackButton(
+                'В меню',
+                Callback.MAIN_MENU
+            )
+        ]
+    )
+
     return InlineKeyboardMarkup(buttons)
 
 

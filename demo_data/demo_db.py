@@ -13,7 +13,7 @@ from demo_data.models import (
 from demo_data.utils import find_value_in_dict, load_from_json
 
 
-def get_toppings():
+def _old_get_toppings():
     return [
         models.Topping(0, 'Без топпинга', 0),
         models.Topping(1, 'Белый соус', 200),
@@ -22,7 +22,7 @@ def get_toppings():
     ]
 
 
-def get_berries():
+def _old_get_berries():
     return [
         models.Berry(0, 'Ежевика', 400),
         models.Berry(1, 'Малина', 300),
@@ -30,7 +30,7 @@ def get_berries():
     ]
 
 
-def get_decor():
+def _old_get_decor():
     return [
         models.Decor(0, 'Фисташки', 300),
         models.Decor(1, 'Безе', 400),
@@ -38,7 +38,7 @@ def get_decor():
     ]
 
 
-def get_user():
+def _old_get_user():
     role = models.Role(1, "Customer")
     return models.User(
         1,
@@ -50,7 +50,7 @@ def get_user():
     )
 
 
-def get_promocodes():
+def _old_get_promocodes():
     return [
         models.Promocode(0, 'SUPERCAKE20', True),
         models.Promocode(1, 'NEWYEAR', False),
