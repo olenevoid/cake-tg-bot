@@ -46,9 +46,11 @@ async def order_cake(update: Update, context: CallbackContext):
 
     await update.callback_query.edit_message_text(
         text,
-        reply_markup=keyboards.get_back_to_menu(),
+        reply_markup=keyboards.get_order_cake(),
         parse_mode='HTML'
     )
+    
+    return State.ORDER_CAKE
 
 
 async def my_orders(update: Update, context: CallbackContext):
