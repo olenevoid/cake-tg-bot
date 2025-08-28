@@ -7,6 +7,7 @@ from demo_data.demo_db import get_cakes, get_cake, find_user
 from tg_bot.callbacks import parse_callback_data_string
 
 
+
 async def show_cakes(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     cakes = get_cakes()
@@ -56,4 +57,3 @@ async def add_to_cart(update: Update, context: CallbackContext):
     context.user_data['cart'] = cart
 
     return await show_cakes(update, context)
-
