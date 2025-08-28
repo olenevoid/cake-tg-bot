@@ -7,8 +7,31 @@ from telegram.ext import (
 )
 from tg_bot.callbacks import Callback, get_pattern
 from tg_bot.handlers.states import State
-from tg_bot.handlers import main_menu
-from tg_bot.handlers import registration
+from tg_bot.handlers import main_menu, registration, order_cake
+
+
+def get_order_cake_conversation_handler():
+    return ConversationHandler(
+        entry_points=[
+            CallbackQueryHandler(
+                order_cake.show_cakes,
+                get_pattern(Callback.SHOW_CAKES)
+            )
+        ],
+        states={
+            State.SHOW_CAKES: [],
+        },
+        map_to_parent={
+            State.MAIN_MENU: State.MAIN_MENU
+        },
+        fallbacks=[
+            CommandHandler("start", main_menu.start),
+            CallbackQueryHandler(
+                main_menu.show_main_menu,
+                get_pattern(Callback.MAIN_MENU)
+            )
+        ]
+    )
 
 
 def get_registration_conversation_handler():
@@ -75,6 +98,7 @@ def get_registration_conversation_handler():
 def get_main_conversation_handler():
 
     registration_level = get_registration_conversation_handler()
+    order_cake_level = get_order_cake_conversation_handler()
 
     return ConversationHandler(
         entry_points=[
@@ -103,7 +127,8 @@ def get_main_conversation_handler():
                     get_pattern(Callback.SIGNUP)
                 ),
             ],
-            State.REGISTRATION: [registration_level]
+            State.REGISTRATION: [registration_level],
+            State.ORDER_CAKE: [order_cake_level]
 
         },
         fallbacks=[
