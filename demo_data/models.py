@@ -75,7 +75,7 @@ class Cake:
 class Order:
     pk: int
     customer: User
-    cake: Cake
+    cakes: list[Cake]
     address: str  # Если не указан, то загружаем от пользователя
     delivery_date: date
     delivery_time: time | None
