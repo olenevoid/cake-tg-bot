@@ -58,7 +58,6 @@ class Promocode:
 class Cake:
     pk: int
     title: str
-    user: User
     topping: Topping
     shape: Shape
     number_of_layers: int
