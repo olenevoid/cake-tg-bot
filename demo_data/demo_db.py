@@ -1,4 +1,16 @@
 from demo_data import models
+from demo_data.models import (
+    Cake,
+    Topping,
+    Berry,
+    Decor,
+    Shape,
+    Role,
+    User,
+    Order,
+    Promocode
+)
+from demo_data.utils import find_value_in_dict, load_from_json
 
 
 def get_toppings():
@@ -90,3 +102,81 @@ def delete_user_from_db(tg_id):
     user = find_user(tg_id)
     if user:
         users.remove(user)
+        
+
+def get_topping(pk) -> Topping:
+    topping = find_value_in_dict(pk, 'demo_data/json/toppings.json')
+    return Topping(
+        topping.get('pk'),
+        topping.get('title'),
+        topping.get('price')
+    )
+
+
+def get_decor(pk) -> Decor:
+    decor = find_value_in_dict(pk, 'demo_data/json/decors.json')
+    return Decor(
+        decor.get('pk'),
+        decor.get('title'),
+        decor.get('price')
+    )
+
+
+def get_shape(pk) -> Shape:
+    shape = find_value_in_dict(pk, 'demo_data/json/shapes.json')
+    return Shape(
+        shape.get('pk'),
+        shape.get('title'),
+        shape.get('price')
+    )
+
+
+def get_berry(pk) -> Berry:
+    berry = find_value_in_dict(pk, 'demo_data/json/berries.json')
+    return Berry(
+        berry.get('pk'),
+        berry.get('title'),
+        berry.get('price')
+    )
+
+
+def get_ingredients(get_ingredient: callable, pks: list[int]) -> list:
+    ingredients = []
+    for pk in pks:
+        ingredients.append(get_ingredient(pk))
+    return ingredients
+
+
+def parse_cake(cake: dict) -> Cake:
+    topping = get_topping(cake.get('topping'))
+    decors = get_ingredients(get_decor, cake.get('decor'))
+    berries = get_ingredients(get_berry, cake.get('berries'))
+    shape = get_shape(cake.get('shape'))
+
+    parsed_cake = Cake(
+        cake.get('pk'),
+        cake.get('title'),
+        topping,
+        shape,
+        cake.get('number_of_layers'),
+        cake.get('sign'),
+        decors,
+        berries
+    )
+    
+    return parsed_cake
+
+
+def get_cake(pk: int) -> Cake:
+    cake: dict = find_value_in_dict(pk, 'demo_data/json/cakes.json')
+    return parse_cake(cake)
+
+
+def get_cakes() -> list[Cake]:
+    cakes: dict = load_from_json('demo_data/json/cakes.json')
+    parsed_cakes = []
+
+    for _, cake in cakes.items():
+        parsed_cake = parse_cake(cake)
+        parsed_cakes. append(parsed_cake)
+    return parsed_cakes
