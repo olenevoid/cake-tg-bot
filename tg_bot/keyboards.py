@@ -170,5 +170,33 @@ def get_select_cake(cakes: list[Cake], cakes_per_row: int = 2):
     return InlineKeyboardMarkup(buttons)
 
 
+def get_cake_menu(cake: Cake):
+
+    buttons = [
+        CallbackButton(
+            'Добавить в корзину',
+            Callback.ADD_TO_CART,
+            cake_pk=cake.pk
+        ),
+        CallbackButton(
+            'Назад',
+            Callback.SHOW_CAKES
+        )
+    ]
+
+    buttons = split_to_sublists(buttons, 1)
+
+    buttons.append(
+        [
+            CallbackButton(
+                'В меню',
+                Callback.MAIN_MENU
+            )
+        ]
+    )
+
+    return InlineKeyboardMarkup(buttons)
+
+
 def get_my_orders():
     pass
