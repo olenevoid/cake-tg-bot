@@ -19,7 +19,12 @@ def get_order_cake_conversation_handler():
             )
         ],
         states={
-            State.SHOW_CAKES: [],
+            State.SHOW_CAKES: [
+                CallbackQueryHandler(
+                    order_cake.show_cake,
+                    get_pattern(Callback.SHOW_CAKE)
+                ),
+            ],
         },
         map_to_parent={
             State.MAIN_MENU: State.MAIN_MENU
