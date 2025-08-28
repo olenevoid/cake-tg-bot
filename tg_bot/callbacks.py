@@ -11,6 +11,8 @@ class Callback(StrEnum):
     ORDER_CAKE = auto()
     SHOW_CAKES = auto()
     SHOW_CAKE = auto()
+    ADD_TO_CART = auto()
+    REMOVE_FROM_CART = auto()
     MY_ORDERS = auto()
     SHOW_PRICELIST = auto()
     SIGNUP = auto()
