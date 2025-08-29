@@ -24,15 +24,17 @@ def get_order_cake_conversation_handler():
                     order_cake.show_cake,
                     get_pattern(Callback.SHOW_CAKE)
                 ),
+            ],
+            State.SHOW_CAKE: [
                 CallbackQueryHandler(
-                order_cake.show_cakes,
-                get_pattern(Callback.SHOW_CAKES)
+                    order_cake.show_cakes,
+                    get_pattern(Callback.SHOW_CAKES)
                 ),
                 CallbackQueryHandler(
-                order_cake.add_to_cart,
-                get_pattern(Callback.ADD_TO_CART)
+                    order_cake.add_to_cart,
+                    get_pattern(Callback.ADD_TO_CART)
                 )
-            ],
+            ]
         },
         map_to_parent={
             State.MAIN_MENU: State.MAIN_MENU
