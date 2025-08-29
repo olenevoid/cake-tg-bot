@@ -104,10 +104,7 @@ def get_cake_menu(cake: Cake):
             Callback.ADD_TO_CART,
             cake_pk=cake.pk
         ),
-        CallbackButton(
-            'Назад',
-            Callback.SHOW_CAKES
-        )
+        static_buttons.BACK
     ]
 
     buttons = split_to_sublists(buttons, 1)

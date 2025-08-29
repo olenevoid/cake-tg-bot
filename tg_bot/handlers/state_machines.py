@@ -28,7 +28,7 @@ def get_order_cake_conversation_handler():
             State.SHOW_CAKE: [
                 CallbackQueryHandler(
                     order_cake.show_cakes,
-                    get_pattern(Callback.SHOW_CAKES)
+                    get_pattern(Callback.BACK)
                 ),
                 CallbackQueryHandler(
                     order_cake.add_to_cart,

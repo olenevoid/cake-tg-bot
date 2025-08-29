@@ -12,6 +12,7 @@ YES = CallbackButton('Да', Callback.YES)
 NO = CallbackButton('Нет', Callback.NO)
 REDO = CallbackButton('Изменить',Callback.REDO)
 SHOW_CAKES = CallbackButton('Готовые торты', Callback.SHOW_CAKES)
+BACK = CallbackButton('Назад', Callback.BACK)
 CUSTOM_CAKE = CallbackButton(
     'Заказать новый (не работает)',
     Callback.MAIN_MENU
