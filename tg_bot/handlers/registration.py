@@ -102,10 +102,6 @@ async def validate_address(update: Update, context: CallbackContext):
     if validators.is_address(address)[0]:
         context.user_data['address'] = address
         # Заготовка на будущее, чтобы во время заказа торта можно было
-        # использовать эту же функцию
-        mode = context.user_data.get('mode')
-        if mode == 'make_order':
-            return
         return await confirm_signup(update, context)
 
     else:
