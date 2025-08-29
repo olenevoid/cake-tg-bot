@@ -53,7 +53,7 @@ def get_order_cake_conversation_handler():
                     get_pattern(Callback.CLEAR_CART)
                 ),
                 CallbackQueryHandler(
-                    order_cake.confirm_order,
+                    order_cake.create_order,
                     get_pattern(Callback.CREATE_ORDER)
                 )
             ]
@@ -118,7 +118,7 @@ def get_registration_conversation_handler():
                     Callback.YES
                 ),
                 CallbackQueryHandler(registration.input_name, Callback.REDO),
-                CallbackQueryHandler(order_cake.confirm_order, Callback.CREATE_ORDER)
+                CallbackQueryHandler(order_cake.create_order, Callback.CREATE_ORDER)
             ]
         },
         map_to_parent={

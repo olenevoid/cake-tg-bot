@@ -106,7 +106,7 @@ async def clear_cart(update: Update, context: CallbackContext):
     return await show_cart(update, context)
 
 
-async def confirm_order(update: Update, context: CallbackContext):
+async def create_order(update: Update, context: CallbackContext):
     await update.callback_query.answer()
 
     tg_id = update.effective_chat.id
@@ -155,7 +155,7 @@ async def validate_promocode(update: Update, context: CallbackContext):
     promocode = update.message.text
     if validators.is_valid_promocode(promocode):
         context.user_data['promocode'] = promocode
-        return await confirm_order(update, context)
+        return await create_order(update, context)
 
     else:
 
