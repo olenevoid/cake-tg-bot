@@ -47,6 +47,10 @@ def get_order_cake_conversation_handler():
                 CallbackQueryHandler(
                     order_cake.remove_cake_from_cart,
                     get_pattern(Callback.REMOVE_FROM_CART)
+                ),
+                CallbackQueryHandler(
+                    order_cake.clear_cart,
+                    get_pattern(Callback.CLEAR_CART)
                 )
             ]
         },

@@ -97,3 +97,9 @@ async def remove_cake_from_cart(update: Update, context: CallbackContext):
 
     return await show_cart(update, context)
 
+
+async def clear_cart(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    context.user_data['cart'] = []
+
+    return await show_cart(update, context)
