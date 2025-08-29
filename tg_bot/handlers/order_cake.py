@@ -41,7 +41,7 @@ async def show_cake(update: Update, context: CallbackContext):
         reply_markup=keyboards.get_cake_menu(cake),
         parse_mode='HTML'
     )
-    return State.SHOW_CAKES
+    return State.SHOW_CAKE
 
 
 async def add_to_cart(update: Update, context: CallbackContext):
