@@ -5,7 +5,7 @@ import tg_bot.strings as strings
 from tg_bot.handlers.states import State
 from demo_data.demo_db import get_cakes, get_cake, find_user
 from tg_bot.callbacks import parse_callback_data_string
-
+import tg_bot.handlers.registration as registration
 
 
 async def show_cakes(update: Update, context: CallbackContext):
@@ -103,3 +103,32 @@ async def clear_cart(update: Update, context: CallbackContext):
     context.user_data['cart'] = []
 
     return await show_cart(update, context)
+
+
+async def confirm_order(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+
+    tg_id = update.effective_chat.id
+    user = find_user(tg_id)
+    
+    if not user:
+        await registration.start_registration(update, context)
+        return State.REGISTRATION
+
+    cart = context.user_data.get('cart')
+    cakes = []
+
+    if cart:
+        cakes = [get_cake(cake_pk) for cake_pk in cart]
+
+    text = (
+        'Подтвердите создание заказа'
+        f'Всего {len(cakes)} позиций'
+        'Список'
+    )
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_back_to_menu(),
+        parse_mode='HTML'
+    )

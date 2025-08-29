@@ -51,11 +51,16 @@ def get_order_cake_conversation_handler():
                 CallbackQueryHandler(
                     order_cake.clear_cart,
                     get_pattern(Callback.CLEAR_CART)
+                ),
+                CallbackQueryHandler(
+                    order_cake.confirm_order,
+                    get_pattern(Callback.CREATE_ORDER)
                 )
             ]
         },
         map_to_parent={
-            State.MAIN_MENU: State.MAIN_MENU
+            State.MAIN_MENU: State.MAIN_MENU,
+            State.REGISTRATION: State.REGISTRATION
         },
         fallbacks=[
             CommandHandler("start", main_menu.start),
