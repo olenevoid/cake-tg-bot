@@ -58,11 +58,11 @@ class Promocode:
 class Cake:
     pk: int
     title: str
-    custom: bool = False  # Новое поле
     topping: Topping
     shape: Shape
     number_of_layers: int
     sign: str
+    custom: bool = False  # Новое поле
     decor: list[Decor] = field(default_factory=list[Decor])
     berries: list[Berry] = field(default_factory=list[Berry])
 
