@@ -133,6 +133,7 @@ def get_cart_menu(cakes: list[Cake]):
 
     buttons.append([static_buttons.CLEAR_CART])
     buttons.append([static_buttons.BACK])
+    buttons.append([static_buttons.CREATE_ORDER])
     buttons.append([static_buttons.MAIN_MENU])
 
     return InlineKeyboardMarkup(buttons)
