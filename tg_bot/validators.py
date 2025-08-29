@@ -113,3 +113,8 @@ def is_valid_delivery_time(delivery_time: time, delivery_date: date = None) -> T
             return False, "Доставка возможна минимум через 2 часа от текущего времени"
 
     return True, ""
+
+
+def is_valid_promocode(code: str):
+    # TODO: Сделать проверку, что такой промокод есть и активен
+    return True
