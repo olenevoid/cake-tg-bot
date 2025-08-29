@@ -138,6 +138,8 @@ async def create_order(update: Update, context: CallbackContext):
         parse_mode='HTML'
     )
 
+    return State.CREATE_ORDER
+
 
 async def input_promocode(update: Update, context: CallbackContext):
     text = 'Введите промокод'

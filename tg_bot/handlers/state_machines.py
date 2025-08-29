@@ -56,6 +56,16 @@ def get_order_cake_conversation_handler():
                     order_cake.create_order,
                     get_pattern(Callback.CREATE_ORDER)
                 )
+            ],
+            State.CREATE_ORDER: [
+                CallbackQueryHandler(
+                    order_cake.input_promocode,
+                    Callback.ADD_PROMO
+                ),
+
+            ],
+            State.INPUT_PROMOCODE: [
+                MessageHandler(filters.TEXT, order_cake.validate_promocode)
             ]
         },
         map_to_parent={
