@@ -1,0 +1,25 @@
+{
+  "1": {
+    "pk": 1,
+    "title": "Ягодный торт Марии",
+    "user": 2,
+    "topping": 5,
+    "shape": 1,
+    "number_of_layers": 2,
+    "sign": "С днем рождения!",
+    "decor": [2, 5],
+    "berries": [2, 4]
+  },
+  
+  "2": {
+    "pk": 2,
+    "title": "Шоколадный торт Ивана",
+    "user": 1,
+    "topping": 7,
+    "shape": 2,
+    "number_of_layers": 1,
+    "sign": "",
+    "decor": [3],
+    "berries": []
+  }
+}
