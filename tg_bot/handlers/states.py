@@ -8,6 +8,7 @@ class State(Enum):
     INPUT_NAME = auto()
     INPUT_ADDRESS = auto()
     INPUT_PHONE = auto()
+    INPUT_PROMOCODE = auto()
     CONFIRM_SIGNUP = auto()
     SHOW_CAKES = auto()
     SHOW_CAKE = auto()

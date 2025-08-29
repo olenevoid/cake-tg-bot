@@ -6,6 +6,7 @@ from tg_bot.handlers.states import State
 from demo_data.demo_db import get_cakes, get_cake, find_user
 from tg_bot.callbacks import parse_callback_data_string
 import tg_bot.handlers.registration as registration
+import tg_bot.validators as validators
 
 
 async def show_cakes(update: Update, context: CallbackContext):
@@ -110,12 +111,14 @@ async def confirm_order(update: Update, context: CallbackContext):
 
     tg_id = update.effective_chat.id
     user = find_user(tg_id)
-    
+
     if not user:
         return await registration.start_registration(update, context)
 
     cart = context.user_data.get('cart')
     cakes = []
+
+    promocode = context.user_data.get('promocode')
 
     if cart:
         cakes = [get_cake(cake_pk) for cake_pk in cart]
@@ -126,8 +129,42 @@ async def confirm_order(update: Update, context: CallbackContext):
         'Список'
     )
 
+    if promocode:
+        text += f'Использован промокод {promocode}'
+
     await update.callback_query.edit_message_text(
         text,
-        reply_markup=keyboards.get_back_to_menu(),
+        reply_markup=keyboards.get_create_order_menu(),
         parse_mode='HTML'
     )
+
+
+async def input_promocode(update: Update, context: CallbackContext):
+    text = 'Введите промокод'
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+    )
+
+    return State.INPUT_PROMOCODE
+
+
+async def validate_promocode(update: Update, context: CallbackContext):
+    promocode = update.message.text
+    if validators.is_valid_promocode(promocode):
+        context.user_data['promocode'] = promocode
+        return await confirm_order(update, context)
+
+    else:
+
+        text = 'Такого промокода нет'
+
+        await context.bot.send_message(
+                chat_id=update.effective_chat.id,
+                text=text,
+                parse_mode='HTML',
+        )
+
+        return State.INPUT_PROMOCODE
