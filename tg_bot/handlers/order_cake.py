@@ -41,7 +41,7 @@ async def show_cake(update: Update, context: CallbackContext):
         reply_markup=keyboards.get_cake_menu(cake),
         parse_mode='HTML'
     )
-    return State.SHOW_CAKES
+    return State.SHOW_CAKE
 
 
 async def add_to_cart(update: Update, context: CallbackContext):
@@ -57,3 +57,25 @@ async def add_to_cart(update: Update, context: CallbackContext):
     context.user_data['cart'] = cart
 
     return await show_cakes(update, context)
+
+
+async def show_cart(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    cart = context.user_data.get('cart')
+
+    ### в strings
+    if not cart:
+        text = 'Корзина пуста'
+    else:
+        text = (
+            f'Позиций в корзине: {len(cart)}\n'
+            'Тут список тортов\n'
+            'Нажмите на кнопку с названием торта чтобы удалить из корзины'
+        )
+    ###
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_back_to_menu(),
+        parse_mode='HTML'
+    )
