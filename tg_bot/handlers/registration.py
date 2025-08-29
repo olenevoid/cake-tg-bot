@@ -45,8 +45,7 @@ async def validate_name(update: Update, context: CallbackContext):
     full_name = update.message.text
     if validators.is_valid_name(full_name)[0]:
         context.user_data['full_name'] = full_name
-        await input_phone(update, context)
-        return State.INPUT_PHONE
+        return await input_phone(update, context)
 
     else:
         await context.bot.send_message(
@@ -66,14 +65,15 @@ async def input_phone(update: Update, context: CallbackContext):
             text=text,
             parse_mode='HTML',
     )
+    
+    return State.INPUT_PHONE
 
 
 async def validate_phone(update: Update, context: CallbackContext):
     phone = update.message.text
     if validators.is_phone(phone)[0]:
         context.user_data['phone'] = phone
-        await input_address(update, context)
-        return State.INPUT_ADDRESS
+        return await input_address(update, context)
 
     else:
         await context.bot.send_message(
@@ -94,6 +94,8 @@ async def input_address(update: Update, context: CallbackContext):
             parse_mode='HTML',
     )
 
+    return State.INPUT_ADDRESS
+
 
 async def validate_address(update: Update, context: CallbackContext):
     address = update.message.text
@@ -104,8 +106,8 @@ async def validate_address(update: Update, context: CallbackContext):
         mode = context.user_data.get('mode')
         if mode == 'make_order':
             return
-        await confirm_signup(update, context)
-        return State.CONFIRM_SIGNUP
+        return await confirm_signup(update, context)
+
     else:
         await context.bot.send_message(
                 chat_id=update.effective_chat.id,
@@ -134,6 +136,8 @@ async def confirm_signup(update: Update, context: CallbackContext):
             reply_markup=keyboards.get_confirm_registration()
     )
 
+    return State.CONFIRM_SIGNUP
+
 
 async def signup_customer(update: Update, context: CallbackContext):
     tg_id = update.effective_chat.id
@@ -157,4 +161,4 @@ async def delete_user(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     tg_id = update.effective_chat.id
     delete_user_from_db(tg_id)
-    await main_menu.show_main_menu(update, context)
+    return await main_menu.show_main_menu(update, context)
