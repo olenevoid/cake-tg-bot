@@ -44,6 +44,10 @@ def get_order_cake_conversation_handler():
                     order_cake.show_cakes,
                     get_pattern(Callback.BACK)
                 ),
+                CallbackQueryHandler(
+                    order_cake.remove_cake_from_cart,
+                    get_pattern(Callback.REMOVE_FROM_CART)
+                )
             ]
         },
         map_to_parent={

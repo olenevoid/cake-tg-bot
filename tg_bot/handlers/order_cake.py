@@ -85,3 +85,15 @@ async def show_cart(update: Update, context: CallbackContext):
     )
 
     return State.SHOW_CART
+
+
+async def remove_cake_from_cart(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    params = parse_callback_data_string(update.callback_query.data).params
+    cake_pk = params.get('cake_pk')
+    cart: list = context.user_data.get('cart')
+    if cart:
+        cart.remove(cake_pk)
+
+    return await show_cart(update, context)
+
