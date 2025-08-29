@@ -16,6 +16,8 @@ BACK = CallbackButton('Назад', Callback.BACK)
 SHOW_CART = CallbackButton('Открыть корзину', Callback.SHOW_CART)
 CLEAR_CART = CallbackButton('Очистить корзину', Callback.CLEAR_CART)
 CREATE_ORDER = CallbackButton('Создать заказ', Callback.CREATE_ORDER)
+ADD_PROMO = CallbackButton('Добавить промокод', Callback.ADD_PROMO)
+ADD_COMMENT = CallbackButton('Добавить комментарий', Callback.ADD_COMMENT)
 CUSTOM_CAKE = CallbackButton(
     'Заказать новый (не работает)',
     Callback.MAIN_MENU

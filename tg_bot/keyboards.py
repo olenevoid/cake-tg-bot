@@ -152,5 +152,18 @@ def get_signup_complete_menu(cart: list[Cake]):
     return InlineKeyboardMarkup(buttons)
 
 
+def get_create_order_menu():
+    buttons = [
+        static_buttons.ADD_PROMO,
+        static_buttons.ADD_COMMENT
+    ]
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append([static_buttons.MAIN_MENU])
+
+    return InlineKeyboardMarkup(buttons)
+
+
 def get_my_orders():
     pass
