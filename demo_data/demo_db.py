@@ -1,4 +1,5 @@
 from demo_data import models
+from datetime import datetime
 from demo_data.models import (
     Cake,
     Topping,
@@ -102,7 +103,72 @@ def delete_user_from_db(tg_id):
     user = find_user(tg_id)
     if user:
         users.remove(user)
-        
+
+
+def get_role(pk) -> Role:
+    role = find_value_in_dict(pk, 'demo_data/json/roles.json')
+    return Role(
+        role.get('pk'),
+        role.get('title')
+    )
+
+
+def get_user(pk) -> User:
+    user = find_value_in_dict(pk, 'demo_data/json/users.json')
+    role = get_role(user.get('role'))
+    return User(
+        user.get('pk'),
+        user.get('tg_id'),
+        user.get('full_name'),
+        role,
+        user.get('address'),
+        user.get('phone')
+    )
+
+
+def get_promocode(pk) -> Promocode:
+    promocode = find_value_in_dict(pk, 'demo_data/json/promocodes.json')
+    return Promocode(
+        promocode.get('pk'),
+        promocode.get('title'),
+        promocode.get('is_active')
+    )
+
+
+def parse_order(order: dict) -> Order:
+    customer = get_user(order.get('customer'))
+    cake = get_cake(order.get('cake'))
+    promocode_id = order.get('promocode')
+    promocode = get_promocode(promocode_id) if promocode_id else None
+
+    # Преобразуем дату и время из строк в объекты
+    delivery_date = datetime.strptime(order.get('delivery_date'), '%Y-%m-%d').date()
+    delivery_time = datetime.strptime(order.get('delivery_time'), '%H:%M').time() if order.get('delivery_time') else None
+
+    return Order(
+        order.get('pk'),
+        customer,
+        [cake],
+        order.get('address'),
+        delivery_date,
+        delivery_time,
+        promocode,
+        order.get('comment')
+    )
+
+
+def get_order(pk: int) -> Order:
+    order = find_value_in_dict(pk, 'demo_data/json/orders.json')
+    return parse_order(order)
+
+
+def get_orders() -> list[Order]:
+    orders_data = load_from_json('demo_data/json/orders.json')
+    parsed_orders = []
+    for _, order_data in orders_data.items():
+        parsed_orders.append(parse_order(order_data))
+    return parsed_orders
+
 
 def get_topping(pk) -> Topping:
     topping = find_value_in_dict(pk, 'demo_data/json/toppings.json')

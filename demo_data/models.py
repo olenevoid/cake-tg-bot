@@ -58,7 +58,7 @@ class Promocode:
 class Cake:
     pk: int
     title: str
-    custom: bool
+    custom: bool = False  # Новое поле
     topping: Topping
     shape: Shape
     number_of_layers: int
@@ -67,8 +67,29 @@ class Cake:
     berries: list[Berry] = field(default_factory=list[Berry])
 
     def get_price(self):
-        # Считаем сумму со всех элементов и выводим
-        return 1337
+        # Цена за количество уровней
+        level_prices = {1: 400, 2: 750, 3: 1100}
+        price = level_prices.get(self.number_of_layers, 400)  # по умолчанию 400р за 1 уровень
+
+        # Цена формы
+        price += self.shape.price
+        
+        # Цена топпинга
+        price += self.topping.price
+
+        # Цена ягод
+        for berry in self.berries:
+            price += berry.price
+
+        # Цена декора
+        for decor_item in self.decor:
+            price += decor_item.price
+
+        # Цена надписи
+        if self.sign and self.sign.strip():  # проверяем, что надпись не пустая
+            price += 500
+        
+        return price
 
 
 @dataclass
