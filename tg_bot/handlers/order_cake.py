@@ -112,8 +112,7 @@ async def confirm_order(update: Update, context: CallbackContext):
     user = find_user(tg_id)
     
     if not user:
-        await registration.start_registration(update, context)
-        return State.REGISTRATION
+        return await registration.start_registration(update, context)
 
     cart = context.user_data.get('cart')
     cakes = []
