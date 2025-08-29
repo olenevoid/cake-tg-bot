@@ -36,6 +36,19 @@ def create_test_json_files():
                 "sign": "",
                 "decor": [3],
                 "berries": []
+            },
+            "3": {
+                "pk": 3,
+                "title": "Красный бархат",
+                "price": 2000,
+                "image": "https://....jpg",  # Замените на реальную ссылку
+                "user": None,
+                "topping": None,
+                "shape": None,
+                "number_of_layers": None,
+                "sign": None,
+                "decor": [],
+                "berries": [],
             }
         },
         "decors.json": {

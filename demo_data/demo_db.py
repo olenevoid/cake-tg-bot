@@ -40,14 +40,14 @@ def _old_get_decor():
 
 
 def _old_get_user():
-    role = models.Role(1, "Customer")
+    role = models.Role(1, 'Customer')
     return models.User(
         1,
-        "11111111",
-        "Иванов Иван Иванович",
+        '11111111',
+        'Иванов Иван Иванович',
         role,
-        "ул. Ленина 10",
-        "89224355343"
+        'ул. Ленина 10',
+        '89224355343'
     )
 
 
@@ -214,18 +214,37 @@ def get_ingredients(get_ingredient: callable, pks: list[int]) -> list:
 
 
 def parse_cake(cake: dict) -> Cake:
-    topping = get_topping(cake.get('topping'))
-    decors = get_ingredients(get_decor, cake.get('decor'))
-    berries = get_ingredients(get_berry, cake.get('berries'))
-    shape = get_shape(cake.get('shape'))
+    # Для типовых тортов некоторые поля могут отсутствовать (быть null)
+    # Получаем значения, если они есть
+    topping_id = cake.get('topping')
+    topping = get_topping(topping_id) if topping_id is not None else None
+
+    shape_id = cake.get('shape')
+    shape = get_shape(shape_id) if shape_id is not None else None
+
+    number_of_layers = cake.get('number_of_layers')
+    sign = cake.get('sign')
+
+    decor_ids = cake.get('decor', [])
+    decors = get_ingredients(get_decor, decor_ids) if decor_ids else []
+
+    berries_ids = cake.get('berries', [])
+    berries = get_ingredients(get_berry, berries_ids) if berries_ids else []
+
+    # Получаем цену и изображение, если они есть
+    price = cake.get('price')
+    image = cake.get('image')
 
     parsed_cake = Cake(
         cake.get('pk'),
         cake.get('title'),
+        price,
+        image,
         topping,
         shape,
-        cake.get('number_of_layers'),
-        cake.get('sign'),
+        number_of_layers,
+        sign,
+        False,  # custom - по умолчанию False
         decors,
         berries
     )
