@@ -198,5 +198,27 @@ def get_cake_menu(cake: Cake):
     return InlineKeyboardMarkup(buttons)
 
 
+def get_cart_menu(cakes: list[Cake]):
+
+    buttons = []
+
+    for cake in cakes:
+        button = CallbackButton(
+            cake.title,
+            Callback.REMOVE_FROM_CART,
+            cake_pk=cake.pk
+        )
+        
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append([static_buttons.CLEAR_CART])
+    buttons.append([static_buttons.BACK])
+    buttons.append([static_buttons.MAIN_MENU])
+
+    return InlineKeyboardMarkup(buttons)
+
+
 def get_my_orders():
     pass
