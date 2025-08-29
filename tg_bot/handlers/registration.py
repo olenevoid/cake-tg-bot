@@ -149,7 +149,7 @@ async def signup_customer(update: Update, context: CallbackContext):
             parse_mode='HTML',
             reply_markup=keyboards.get_signup_complete_menu()
     )
-    return State.MAIN_MENU
+    return State.CONFIRM_SIGNUP
 
 
 async def delete_user(update: Update, context: CallbackContext):

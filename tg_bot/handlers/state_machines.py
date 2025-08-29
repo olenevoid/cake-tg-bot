@@ -117,11 +117,13 @@ def get_registration_conversation_handler():
                     registration.signup_customer,
                     Callback.YES
                 ),
-                CallbackQueryHandler(registration.input_name, Callback.REDO)
+                CallbackQueryHandler(registration.input_name, Callback.REDO),
+                CallbackQueryHandler(order_cake.confirm_order, Callback.CREATE_ORDER)
             ]
         },
         map_to_parent={
-            State.MAIN_MENU: State.MAIN_MENU
+            State.MAIN_MENU: State.MAIN_MENU,
+            State.ORDER_CAKE: State.ORDER_CAKE
         },
         fallbacks=[
             CommandHandler("start", main_menu.start),
