@@ -91,6 +91,8 @@ def get_select_cake(cakes: list[Cake], cakes_per_row: int = 2):
 
     buttons = split_to_sublists(buttons, cakes_per_row)
 
+    buttons.append([static_buttons.SHOW_CART])
+
     buttons.append([static_buttons.MAIN_MENU])
 
     return InlineKeyboardMarkup(buttons)

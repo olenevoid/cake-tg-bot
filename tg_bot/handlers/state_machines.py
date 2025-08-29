@@ -24,6 +24,10 @@ def get_order_cake_conversation_handler():
                     order_cake.show_cake,
                     get_pattern(Callback.SHOW_CAKE)
                 ),
+                CallbackQueryHandler(
+                    order_cake.show_cart,
+                    get_pattern(Callback.SHOW_CART)
+                )
             ],
             State.SHOW_CAKE: [
                 CallbackQueryHandler(
@@ -34,6 +38,12 @@ def get_order_cake_conversation_handler():
                     order_cake.add_to_cart,
                     get_pattern(Callback.ADD_TO_CART)
                 )
+            ],
+            State.SHOW_CART: [
+                CallbackQueryHandler(
+                    order_cake.show_cakes,
+                    get_pattern(Callback.BACK)
+                ),
             ]
         },
         map_to_parent={

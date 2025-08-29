@@ -11,4 +11,5 @@ class State(Enum):
     CONFIRM_SIGNUP = auto()
     SHOW_CAKES = auto()
     SHOW_CAKE = auto()
+    SHOW_CART = auto()
     ORDER_CAKE = auto()
