@@ -140,14 +140,15 @@ async def signup_customer(update: Update, context: CallbackContext):
     phone = context.user_data.get('phone')
     address = context.user_data.get('address')
     add_customer(tg_id, name, address, phone)
-
     text = strings.get_signup_complete(name)
+
+    cart = context.user_data.get('cart')
 
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=text,
             parse_mode='HTML',
-            reply_markup=keyboards.get_signup_complete_menu()
+            reply_markup=keyboards.get_signup_complete_menu(cart)
     )
     return State.CONFIRM_SIGNUP
 

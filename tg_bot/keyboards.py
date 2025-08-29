@@ -149,6 +149,8 @@ def get_signup_complete_menu(cart: list[Cake]):
 
     buttons.append([static_buttons.MAIN_MENU])
 
+    return InlineKeyboardMarkup(buttons)
+
 
 def get_my_orders():
     pass
