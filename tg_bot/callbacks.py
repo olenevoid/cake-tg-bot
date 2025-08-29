@@ -15,6 +15,7 @@ class Callback(StrEnum):
     ADD_TO_CART = auto()
     REMOVE_FROM_CART = auto()
     CLEAR_CART = auto()
+    CREATE_ORDER = auto()
     MY_ORDERS = auto()
     SHOW_PRICELIST = auto()
     SIGNUP = auto()
