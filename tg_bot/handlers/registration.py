@@ -147,7 +147,7 @@ async def signup_customer(update: Update, context: CallbackContext):
             chat_id=update.effective_chat.id,
             text=text,
             parse_mode='HTML',
-            reply_markup=keyboards.get_back_to_menu()
+            reply_markup=keyboards.get_signup_complete_menu()
     )
     return State.MAIN_MENU
 

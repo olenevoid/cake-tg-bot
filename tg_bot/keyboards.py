@@ -139,5 +139,16 @@ def get_cart_menu(cakes: list[Cake]):
     return InlineKeyboardMarkup(buttons)
 
 
+def get_signup_complete_menu(cart: list[Cake]):
+    buttons = []
+    
+    if cart:
+        buttons.append(
+            [static_buttons.CREATE_ORDER]
+        )
+
+    buttons.append([static_buttons.MAIN_MENU])
+
+
 def get_my_orders():
     pass
