@@ -22,6 +22,14 @@ from os import path
 
 JSON_DIRECTORY = 'demo_data/json/'
 USERS = path.join(JSON_DIRECTORY, 'users.json')
+ROLES = path.join(JSON_DIRECTORY, 'roles.json')
+PROMOCODES = path.join(JSON_DIRECTORY, 'promocodes.json')
+TOPPINGS = path.join(JSON_DIRECTORY, 'toppings.json')
+BERRIES = path.join(JSON_DIRECTORY, 'berries.json')
+DECORS = path.join(JSON_DIRECTORY, 'decors.json')
+SHAPES = path.join(JSON_DIRECTORY, 'shapes.json')
+CAKES = path.join(JSON_DIRECTORY, 'cakes.json')
+ORDERS = path.join(JSON_DIRECTORY, 'orders.json')
 
 
 def _old_get_toppings():
@@ -105,7 +113,7 @@ def delete_user_from_db(tg_id):
 
 
 def get_role(pk) -> Role:
-    role = find_value_in_dict(pk, 'demo_data/json/roles.json')
+    role = find_value_in_dict(pk, ROLES)
     return Role(
         role.get('pk'),
         role.get('title')
@@ -118,7 +126,7 @@ def get_user(pk) -> User:
 
 
 def get_promocode(pk) -> Promocode:
-    promocode = find_value_in_dict(pk, 'demo_data/json/promocodes.json')
+    promocode = find_value_in_dict(pk, PROMOCODES)
     return Promocode(
         promocode.get('pk'),
         promocode.get('title'),
@@ -161,12 +169,12 @@ def parse_order(order: dict) -> Order:
 
 
 def get_order(pk: int) -> Order:
-    order = find_value_in_dict(pk, 'demo_data/json/orders.json')
+    order = find_value_in_dict(pk, ORDERS)
     return parse_order(order)
 
 
 def get_orders() -> list[Order]:
-    orders_data = load_from_json('demo_data/json/orders.json')
+    orders_data = load_from_json(ORDERS)
     parsed_orders = []
     for _, order_data in orders_data.items():
         parsed_orders.append(parse_order(order_data))
@@ -174,7 +182,7 @@ def get_orders() -> list[Order]:
 
 
 def get_topping(pk) -> Topping:
-    topping = find_value_in_dict(pk, 'demo_data/json/toppings.json')
+    topping = find_value_in_dict(pk, TOPPINGS)
     return Topping(
         topping.get('pk'),
         topping.get('title'),
@@ -183,7 +191,7 @@ def get_topping(pk) -> Topping:
 
 
 def get_decor(pk) -> Decor:
-    decor = find_value_in_dict(pk, 'demo_data/json/decors.json')
+    decor = find_value_in_dict(pk, DECORS)
     return Decor(
         decor.get('pk'),
         decor.get('title'),
@@ -192,7 +200,7 @@ def get_decor(pk) -> Decor:
 
 
 def get_shape(pk) -> Shape:
-    shape = find_value_in_dict(pk, 'demo_data/json/shapes.json')
+    shape = find_value_in_dict(pk, SHAPES)
     return Shape(
         shape.get('pk'),
         shape.get('title'),
@@ -201,7 +209,7 @@ def get_shape(pk) -> Shape:
 
 
 def get_berry(pk) -> Berry:
-    berry = find_value_in_dict(pk, 'demo_data/json/berries.json')
+    berry = find_value_in_dict(pk, BERRIES)
     return Berry(
         berry.get('pk'),
         berry.get('title'),
@@ -256,12 +264,12 @@ def parse_cake(cake: dict) -> Cake:
 
 
 def get_cake(pk: int) -> Cake:
-    cake: dict = find_value_in_dict(pk, 'demo_data/json/cakes.json')
+    cake: dict = find_value_in_dict(pk, CAKES)
     return parse_cake(cake)
 
 
 def get_cakes() -> list[Cake]:
-    cakes: dict = load_from_json('demo_data/json/cakes.json')
+    cakes: dict = load_from_json(CAKES)
     parsed_cakes = []
 
     for _, cake in cakes.items():
