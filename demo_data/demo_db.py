@@ -11,7 +11,7 @@ from demo_data.models import (
     Order,
     Promocode
 )
-from demo_data.utils import find_value_in_dict, load_from_json
+from demo_data.utils import find_value_in_dict, load_from_json, add_to_json
 
 
 def _old_get_toppings():
@@ -80,23 +80,19 @@ def add_customer(
     address: str = 'ул. Ленина 10',
     phone: str = '89001234567'
 ):
-    role = models.Role(1, 'Customer')
-    if not users:
-        pk = 0
-    else:
-        pk = len(users)
+    customer_role_pk = 1
 
-    user = models.User(
-        pk,
-        tg_id,
-        full_name,
-        role,
-        address,
-        phone
-    )
+    user = {
+        'pk': None,
+        'tg_id': tg_id,
+        'full_name': full_name,
+        'role': customer_role_pk,
+        'address': address,
+        'phone': phone
+    }
 
-    if not find_user(tg_id):
-        users.append(user)
+    add_to_json('demo_data/json/users.json', user)
+    return
 
 
 def delete_user_from_db(tg_id):
