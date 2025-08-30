@@ -71,15 +71,7 @@ def _old_get_promocodes():
 
 def find_user(tg_id: int) -> models.User | None:
     user = find_by_field(USERS, 'tg_id', tg_id)
-    role = get_role(user.get('role'))
-    return User(
-        user.get('pk'),
-        user.get('tg_id'),
-        user.get('full_name'),
-        role,
-        user.get('address'),
-        user.get('phone')
-    )
+    return parse_user(user)
 
 
 #TODO: Удалить значения по умолчанию ближе к концу разработки
@@ -120,15 +112,7 @@ def get_role(pk) -> Role:
 
 def get_user(pk) -> User:
     user = find_value_in_dict(pk, USERS)
-    role = get_role(user.get('role'))
-    return User(
-        user.get('pk'),
-        user.get('tg_id'),
-        user.get('full_name'),
-        role,
-        user.get('address'),
-        user.get('phone')
-    )
+    return parse_user(user)
 
 
 def get_promocode(pk) -> Promocode:
@@ -137,6 +121,18 @@ def get_promocode(pk) -> Promocode:
         promocode.get('pk'),
         promocode.get('title'),
         promocode.get('is_active')
+    )
+
+
+def parse_user(user: dict):
+    role = get_role(user.get('role'))
+    return User(
+        user.get('pk'),
+        user.get('tg_id'),
+        user.get('full_name'),
+        role,
+        user.get('address'),
+        user.get('phone')
     )
 
 
