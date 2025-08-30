@@ -71,7 +71,9 @@ def _old_get_promocodes():
 
 def find_user(tg_id: int) -> models.User | None:
     user = find_by_field(USERS, 'tg_id', tg_id)
-    return parse_user(user)
+    if user:
+        return parse_user(user)
+    return None
 
 
 #TODO: Удалить значения по умолчанию ближе к концу разработки
