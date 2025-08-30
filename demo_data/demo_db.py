@@ -11,7 +11,12 @@ from demo_data.models import (
     Order,
     Promocode
 )
-from demo_data.utils import find_value_in_dict, load_from_json, add_to_json
+from demo_data.utils import (
+    find_value_in_dict,
+    load_from_json,
+    add_to_json,
+    find_by_field
+)
 from os import path
 
 
@@ -64,18 +69,17 @@ def _old_get_promocodes():
     ]
 
 
-users: list[models.User] = []
-
-
 def find_user(tg_id: int) -> models.User | None:
-    if not users:
-        return None
-
-    for user in users:
-        if user.tg_id == tg_id:
-            return user
-
-    return None
+    user = find_by_field(USERS, 'tg_id', tg_id)
+    role = get_role(user.get('role'))
+    return User(
+        user.get('pk'),
+        user.get('tg_id'),
+        user.get('full_name'),
+        role,
+        user.get('address'),
+        user.get('phone')
+    )
 
 
 #TODO: Удалить значения по умолчанию ближе к концу разработки
