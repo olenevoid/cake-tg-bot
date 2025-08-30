@@ -119,7 +119,7 @@ def get_cake_menu(cake: Cake):
 def get_cart_menu(cakes: list[Cake]):
 
     buttons = []
-
+    cake_buttons = []
     for cake in cakes:
         button = CallbackButton(
             cake.title,
@@ -127,13 +127,14 @@ def get_cart_menu(cakes: list[Cake]):
             cake_pk=cake.pk
         )
         
-        buttons.append(button)
+        cake_buttons.append(button)
 
-    buttons = split_to_sublists(buttons, 2)
+    cake_buttons = split_to_sublists(cake_buttons, 2)
 
+    buttons.append([static_buttons.CREATE_ORDER])
+    buttons.extend(cake_buttons)
     buttons.append([static_buttons.CLEAR_CART])
     buttons.append([static_buttons.BACK])
-    buttons.append([static_buttons.CREATE_ORDER])
     buttons.append([static_buttons.MAIN_MENU])
 
     return InlineKeyboardMarkup(buttons)

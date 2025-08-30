@@ -117,6 +117,7 @@ async def create_order(update: Update, context: CallbackContext):
     cakes = []
 
     promocode = context.user_data.get('promocode')
+    comment = context.user_data.get('comment')
 
     if cart:
         cakes = [get_cake(cake_pk) for cake_pk in cart]
@@ -129,6 +130,12 @@ async def create_order(update: Update, context: CallbackContext):
 
     if promocode:
         text += f'Использован промокод {promocode}\n'
+        
+    if comment:
+        text += (
+            'Комментарий заказчика:\n'
+            f'{comment}\n'
+        )
 
     if context.user_data.get('new_message'):
         context.user_data['new_message'] = False
@@ -179,3 +186,22 @@ async def validate_promocode(update: Update, context: CallbackContext):
         )
 
         return State.INPUT_PROMOCODE
+
+
+async def input_comment(update: Update, context: CallbackContext):
+    text = 'Введите комментарий'
+
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode='HTML',
+    )
+
+    return State.INPUT_COMMENT
+
+
+async def add_comment(update: Update, context: CallbackContext):
+    comment = update.message.text
+    context.user_data['comment'] = comment
+    context.user_data['new_message'] = True
+    return await create_order(update, context)
