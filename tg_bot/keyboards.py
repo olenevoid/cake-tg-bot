@@ -3,6 +3,7 @@ from tg_bot.callbacks import Callback, CallbackButton
 from utils import split_to_sublists
 from demo_data.models import User, Cake
 import tg_bot.buttons as static_buttons
+from datetime import date, time
 
 
 def get_main_menu(user: User):
@@ -161,8 +162,46 @@ def get_create_order_menu():
 
     buttons = split_to_sublists(buttons, 2)
 
+    buttons.append([static_buttons.SELECT_DATE])
+
     buttons.append([static_buttons.MAIN_MENU])
 
+    return InlineKeyboardMarkup(buttons)
+
+
+def get_select_date_menu(dates: list[date]):
+
+    buttons = []
+
+    for date_ in dates:
+        button = CallbackButton(
+            f'{date_.day}.{date_.month}',
+            Callback.ADD_DATE,
+            date=date_.isoformat()
+        )
+
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+    buttons.append([static_buttons.MAIN_MENU])
+    return InlineKeyboardMarkup(buttons)
+
+
+def get_select_time_menu(times: list[time]):
+
+    buttons = []
+
+    for time_ in times:
+        button = CallbackButton(
+            f'{time_.hour}:{time_.minute}',
+            Callback.ADD_TIME,
+            time=time_.isoformat()
+        )
+
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+    buttons.append([static_buttons.MAIN_MENU])
     return InlineKeyboardMarkup(buttons)
 
 

@@ -7,6 +7,8 @@ from demo_data.demo_db import get_cakes, get_cake, find_user
 from tg_bot.callbacks import parse_callback_data_string
 import tg_bot.handlers.registration as registration
 import tg_bot.validators as validators
+from utils import get_available_dates, get_available_times
+from datetime import date
 
 
 async def show_cakes(update: Update, context: CallbackContext):
@@ -118,6 +120,8 @@ async def create_order(update: Update, context: CallbackContext):
 
     promocode = context.user_data.get('promocode')
     comment = context.user_data.get('comment')
+    delivery_date = context.user_data.get('date')
+    delivery_time = context.user_data.get('time')
 
     if cart:
         cakes = [get_cake(cake_pk) for cake_pk in cart]
@@ -128,9 +132,15 @@ async def create_order(update: Update, context: CallbackContext):
         'Список\n'
     )
 
+    if delivery_date:
+        text += f'Дата: {delivery_date}\n'
+
+    if delivery_time:
+        text += f'Время: {delivery_time}\n'
+
     if promocode:
         text += f'Использован промокод {promocode}\n'
-        
+
     if comment:
         text += (
             'Комментарий заказчика:\n'
@@ -204,4 +214,53 @@ async def add_comment(update: Update, context: CallbackContext):
     comment = update.message.text
     context.user_data['comment'] = comment
     context.user_data['new_message'] = True
+    return await create_order(update, context)
+
+
+async def select_date(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+
+    text = 'Выберите дату'
+    dates = get_available_dates()
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_select_date_menu(dates),
+        parse_mode='HTML'
+    )
+
+    return State.CREATE_ORDER
+
+
+async def add_date(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    params = parse_callback_data_string(update.callback_query.data).params
+    date = params.get('date')
+    context.user_data['date'] = date
+
+    return await select_time(update, context)
+
+
+async def select_time(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+
+    text = 'Выберите время'
+    delivery_date = context.user_data.get('date')
+    times = get_available_times(date.fromisoformat(delivery_date))
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_select_time_menu(times),
+        parse_mode='HTML'
+    )
+
+    return State.CREATE_ORDER
+
+
+async def add_time(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    params = parse_callback_data_string(update.callback_query.data).params
+    time = params.get('time')
+    context.user_data['time'] = time
+
     return await create_order(update, context)

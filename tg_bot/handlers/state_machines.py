@@ -65,6 +65,18 @@ def get_order_cake_conversation_handler():
                 CallbackQueryHandler(
                     order_cake.input_comment,
                     Callback.ADD_COMMENT
+                ),
+                CallbackQueryHandler(
+                    order_cake.select_date,
+                    Callback.SELECT_DATE
+                ),
+                CallbackQueryHandler(
+                    order_cake.add_date,
+                    get_pattern(Callback.ADD_DATE)
+                ),
+                CallbackQueryHandler(
+                    order_cake.add_time,
+                    get_pattern(Callback.ADD_TIME)
                 )
             ],
             State.INPUT_PROMOCODE: [
