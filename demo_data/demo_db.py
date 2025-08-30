@@ -12,6 +12,11 @@ from demo_data.models import (
     Promocode
 )
 from demo_data.utils import find_value_in_dict, load_from_json, add_to_json
+from os import path
+
+
+JSON_DIRECTORY = 'demo_data/json/'
+USERS = path.join(JSON_DIRECTORY, 'users.json')
 
 
 def _old_get_toppings():
@@ -91,7 +96,7 @@ def add_customer(
         'phone': phone
     }
 
-    add_to_json('demo_data/json/users.json', user)
+    add_to_json(USERS, user)
     return
 
 
@@ -110,7 +115,7 @@ def get_role(pk) -> Role:
 
 
 def get_user(pk) -> User:
-    user = find_value_in_dict(pk, 'demo_data/json/users.json')
+    user = find_value_in_dict(pk, USERS)
     role = get_role(user.get('role'))
     return User(
         user.get('pk'),
