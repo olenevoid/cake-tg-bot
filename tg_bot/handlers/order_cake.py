@@ -107,8 +107,6 @@ async def clear_cart(update: Update, context: CallbackContext):
 
 
 async def create_order(update: Update, context: CallbackContext):
-    await update.callback_query.answer()
-
     tg_id = update.effective_chat.id
     user = find_user(tg_id)
 
@@ -124,19 +122,29 @@ async def create_order(update: Update, context: CallbackContext):
         cakes = [get_cake(cake_pk) for cake_pk in cart]
 
     text = (
-        'Подтвердите создание заказа'
-        f'Всего {len(cakes)} позиций'
-        'Список'
+        'Подтвердите создание заказа\n'
+        f'Всего {len(cakes)} позиций\n'
+        'Список\n'
     )
 
     if promocode:
-        text += f'Использован промокод {promocode}'
+        text += f'Использован промокод {promocode}\n'
 
-    await update.callback_query.edit_message_text(
-        text,
-        reply_markup=keyboards.get_create_order_menu(),
-        parse_mode='HTML'
-    )
+    if context.user_data.get('new_message'):
+        context.user_data['new_message'] = False
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            reply_markup=keyboards.get_create_order_menu(),
+            parse_mode='HTML',
+        )
+
+    else:
+        await update.callback_query.edit_message_text(
+            text,
+            reply_markup=keyboards.get_create_order_menu(),
+            parse_mode='HTML'
+        )
 
     return State.CREATE_ORDER
 
@@ -157,6 +165,7 @@ async def validate_promocode(update: Update, context: CallbackContext):
     promocode = update.message.text
     if validators.is_valid_promocode(promocode):
         context.user_data['promocode'] = promocode
+        context.user_data['new_message'] = True
         return await create_order(update, context)
 
     else:
