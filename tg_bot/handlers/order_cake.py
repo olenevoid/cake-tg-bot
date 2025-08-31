@@ -108,7 +108,7 @@ async def clear_cart(update: Update, context: CallbackContext):
     return await show_cart(update, context)
 
 
-async def create_order(update: Update, context: CallbackContext):
+async def confirm_create_order(update: Update, context: CallbackContext):
     tg_id = update.effective_chat.id
     user = find_user(tg_id)
 
@@ -185,7 +185,7 @@ async def validate_promocode(update: Update, context: CallbackContext):
     if validators.is_valid_promocode(promocode):
         context.user_data['promocode'] = promocode
         context.user_data['new_message'] = True
-        return await create_order(update, context)
+        return await confirm_create_order(update, context)
 
     else:
 
@@ -216,7 +216,7 @@ async def add_comment(update: Update, context: CallbackContext):
     comment = update.message.text
     context.user_data['comment'] = comment
     context.user_data['new_message'] = True
-    return await create_order(update, context)
+    return await confirm_create_order(update, context)
 
 
 async def select_date(update: Update, context: CallbackContext):
@@ -265,4 +265,4 @@ async def add_time(update: Update, context: CallbackContext):
     time = params.get('time')
     context.user_data['time'] = time
 
-    return await create_order(update, context)
+    return await confirm_create_order(update, context)
