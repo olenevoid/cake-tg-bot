@@ -85,6 +85,36 @@ def find_user(tg_id: int) -> models.User | None:
     return None
 
 
+def add_cake(
+        title: str,
+        price: int | None,
+        image: str,
+        user: User,
+        topping_pk: int,
+        shape_pk: int,
+        number_of_layers: int | None,
+        sign: str | None,
+        decor_pks: list[int],
+        berry_pks: list[int]
+):
+
+    cake = {
+        'pk': None,
+        'title': title,
+        'price': price,
+        'image': image,
+        'user': user.pk,
+        'topping': topping_pk,
+        'shape': shape_pk,
+        'number_of_layers': number_of_layers,
+        'sign': sign,
+        'decor': decor_pks,
+        'berries': berry_pks
+    }
+
+    add_to_json(CAKES, cake)
+
+
 def add_order(
         user: User,
         cake_pks: list[int],
