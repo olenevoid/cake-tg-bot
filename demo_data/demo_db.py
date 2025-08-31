@@ -18,6 +18,7 @@ from demo_data.utils import (
     find_by_field
 )
 from os import path
+from datetime import date, time
 
 
 JSON_DIRECTORY = 'demo_data/json/'
@@ -82,6 +83,37 @@ def find_user(tg_id: int) -> models.User | None:
     if user:
         return parse_user(user)
     return None
+
+
+def add_order(
+        user: User,
+        cake_pks: list[int],
+        address: str,
+        delivery_date: date | str,
+        delivery_time: time | str,
+        promocode: Promocode = None,
+        comment: str = ''
+):
+    if not address:
+        address = user.address
+
+    promocode_pk = None
+
+    if promocode:
+        promocode_pk = promocode.pk
+
+    order = {
+        'pk': None,
+        'customer': user.pk,
+        'cakes': cake_pks,
+        'address': address,
+        'delivery_date': delivery_date,
+        'delivery_time': delivery_time,
+        'promocode': promocode_pk,
+        'comment': comment
+    }
+
+    add_to_json(ORDERS, order)
 
 
 #TODO: Удалить значения по умолчанию ближе к концу разработки
