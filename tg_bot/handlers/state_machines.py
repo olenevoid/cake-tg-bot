@@ -53,9 +53,9 @@ def get_order_cake_conversation_handler():
                     get_pattern(Callback.CLEAR_CART)
                 ),
                 CallbackQueryHandler(
-                    order_cake.create_order,
+                    order_cake.select_date,
                     get_pattern(Callback.CREATE_ORDER)
-                )
+                ),
             ],
             State.CREATE_ORDER: [
                 CallbackQueryHandler(
