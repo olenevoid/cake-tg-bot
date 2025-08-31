@@ -85,6 +85,17 @@ def find_user(tg_id: int) -> models.User | None:
     return None
 
 
+def find_promocode(promocode_title: str) -> Promocode | None:
+    promocode = find_by_field(PROMOCODES, 'title', promocode_title)
+    if promocode:
+        return Promocode(
+            promocode.get('pk'),
+            promocode.get('title'),
+            promocode.get('is_active')
+        )
+    return None
+
+
 def add_cake(
         title: str,
         price: int | None,
