@@ -18,7 +18,7 @@ CLEAR_CART = CallbackButton('Очистить корзину', Callback.CLEAR_CA
 CREATE_ORDER = CallbackButton('Создать заказ', Callback.CREATE_ORDER)
 ADD_PROMO = CallbackButton('Добавить промокод', Callback.ADD_PROMO)
 ADD_COMMENT = CallbackButton('Добавить комментарий', Callback.ADD_COMMENT)
-SELECT_DATE = CallbackButton('Выберите дату', Callback.SELECT_DATE)
+SELECT_DATE = CallbackButton('Изменить дату и время', Callback.SELECT_DATE)
 CUSTOM_CAKE = CallbackButton(
     'Заказать новый (не работает)',
     Callback.MAIN_MENU
