@@ -16,3 +16,4 @@ class State(Enum):
     SHOW_CART = auto()
     ORDER_CAKE = auto()
     CREATE_ORDER = auto()
+    CREATE_CAKE = auto()
