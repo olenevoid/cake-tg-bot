@@ -3,7 +3,7 @@ import tg_bot.keyboards as keyboards
 from telegram.ext import CallbackContext
 import tg_bot.strings as strings
 from tg_bot.handlers.states import State
-from demo_data.demo_db import get_cakes, get_cake, find_user, add_order
+from demo_data.demo_db import get_cakes, get_cake, find_user, add_order, get_promocode
 from tg_bot.callbacks import parse_callback_data_string
 import tg_bot.handlers.registration as registration
 import tg_bot.validators as validators
@@ -16,14 +16,8 @@ async def show_cakes(update: Update, context: CallbackContext):
     cakes = get_cakes()
     cart = context.user_data.get('cart')
 
-    ### в strings
-    text = 'Торты\n'
-    if cart:
-        text +=f'Тортов в корзине: {len(cart)}'
-    ###
-
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_show_cakes(cart),
         reply_markup=keyboards.get_select_cake(cakes),
         parse_mode='HTML'
     )
@@ -32,15 +26,12 @@ async def show_cakes(update: Update, context: CallbackContext):
 
 async def show_cake(update: Update, context: CallbackContext):
     await update.callback_query.answer()
-    #tg_id = update.effective_chat.id
-    #user = find_user(tg_id)
     params = parse_callback_data_string(update.callback_query.data).params
     cake_pk = params.get('cake_pk')
     cake = get_cake(cake_pk)
-    text = f'Торт {cake.title} за {cake.get_price()}'
-    
+
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_cake_details(cake),
         reply_markup=keyboards.get_cake_menu(cake),
         parse_mode='HTML'
     )
@@ -56,7 +47,6 @@ async def add_to_cart(update: Update, context: CallbackContext):
         cart = []
 
     cart.append(cake_pk)
-    
     context.user_data['cart'] = cart
 
     return await show_cakes(update, context)
@@ -70,19 +60,8 @@ async def show_cart(update: Update, context: CallbackContext):
     if cart:
         cakes = [get_cake(cake_pk) for cake_pk in cart]
 
-    ### в strings
-    if not cart:
-        text = 'Корзина пуста'
-    else:
-        text = (
-            f'Позиций в корзине: {len(cart)}\n'
-            'Тут список тортов\n'
-            'Нажмите на кнопку с названием торта чтобы удалить из корзины'
-        )
-    ###
-
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_cart_details(cakes),
         reply_markup=keyboards.get_cart_menu(cakes),
         parse_mode='HTML'
     )
@@ -117,8 +96,9 @@ async def confirm_create_order(update: Update, context: CallbackContext):
 
     cart = context.user_data.get('cart')
     cakes = []
+    promocode = None
 
-    promocode = context.user_data.get('promocode')
+    promocode_pk = context.user_data.get('promocode')
     comment = context.user_data.get('comment')
     delivery_date = context.user_data.get('date')
     delivery_time = context.user_data.get('time')
@@ -126,28 +106,16 @@ async def confirm_create_order(update: Update, context: CallbackContext):
     if cart:
         cakes = [get_cake(cake_pk) for cake_pk in cart]
 
-    text = (
-        'Подтвердите создание заказа\n'
-        f'Всего {len(cakes)} позиций\n'
-        'Список\n'
+    if promocode_pk:
+        promocode = get_promocode(promocode_pk)
+
+    text = strings.get_confirm_create_order(
+        cakes,
+        delivery_date,
+        delivery_time,
+        promocode,
+        comment
     )
-
-    if delivery_date:
-        text += f'Дата: {delivery_date}\n'
-
-    if delivery_time:
-        text += f'Время: {delivery_time}\n'
-
-    if promocode:
-        text += f'Использован промокод {promocode}\n'
-
-    if comment:
-        text += (
-            'Комментарий заказчика:\n'
-            f'{comment}\n'
-        )
-
-    text += 'Создать заказ?'
 
     if context.user_data.get('new_message'):
         context.user_data['new_message'] = False
@@ -169,11 +137,9 @@ async def confirm_create_order(update: Update, context: CallbackContext):
 
 
 async def input_promocode(update: Update, context: CallbackContext):
-    text = 'Введите промокод'
-
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=text,
+            text=strings.INPUT_PROMO,
             parse_mode='HTML',
     )
 
@@ -186,14 +152,10 @@ async def validate_promocode(update: Update, context: CallbackContext):
         context.user_data['promocode'] = promocode
         context.user_data['new_message'] = True
         return await confirm_create_order(update, context)
-
     else:
-
-        text = 'Такого промокода нет'
-
         await context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=text,
+                text=strings.PROMO_DOES_NOT_EXIST,
                 parse_mode='HTML',
         )
 
@@ -201,11 +163,9 @@ async def validate_promocode(update: Update, context: CallbackContext):
 
 
 async def input_comment(update: Update, context: CallbackContext):
-    text = 'Введите комментарий'
-
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=text,
+            text=strings.INPUT_COMMENT,
             parse_mode='HTML',
     )
 
@@ -222,11 +182,10 @@ async def add_comment(update: Update, context: CallbackContext):
 async def select_date(update: Update, context: CallbackContext):
     await update.callback_query.answer()
 
-    text = 'Выберите дату'
     dates = get_available_dates()
 
     await update.callback_query.edit_message_text(
-        text,
+        strings.SELECT_DATE,
         reply_markup=keyboards.get_select_date_menu(dates),
         parse_mode='HTML'
     )
@@ -246,12 +205,11 @@ async def add_date(update: Update, context: CallbackContext):
 async def select_time(update: Update, context: CallbackContext):
     await update.callback_query.answer()
 
-    text = 'Выберите время'
     delivery_date = context.user_data.get('date')
     times = get_available_times(date.fromisoformat(delivery_date))
 
     await update.callback_query.edit_message_text(
-        text,
+        strings.SELECT_TIME,
         reply_markup=keyboards.get_select_time_menu(times),
         parse_mode='HTML'
     )
@@ -287,10 +245,8 @@ async def create_order(update: Update, context: CallbackContext):
         comment
     )
 
-    text = 'Заказ создан'
-
     await update.callback_query.edit_message_text(
-        text,
+        strings.ORDER_CREATED,
         reply_markup=keyboards.get_back_to_menu(),
         parse_mode='HTML'
     )

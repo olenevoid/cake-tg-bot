@@ -6,7 +6,7 @@
 # https://core.telegram.org/bots/api#formatting-options
 
 
-from demo_data.models import User, Order
+from demo_data.models import User, Order, Cake, Promocode
 
 
 # Начало заказа
@@ -73,6 +73,25 @@ ADDRESS_IS_CORRECT = (
     "Проверьте информацию перед подтверждением регистрации."
 )
 
+
+INPUT_PROMO = 'Введите промокод'
+
+
+PROMO_DOES_NOT_EXIST = ''
+
+
+INPUT_COMMENT = ''
+
+
+SELECT_DATE = ''
+
+
+SELECT_TIME = ''
+
+
+ORDER_CREATED = ''
+
+
 # Торты
 CAKES_LIST = '🎂 <b>Наши торты</b>\n\nВыберите понравившийся торт:'
 
@@ -85,6 +104,7 @@ def get_confirm_signup(full_name: str, phone: str, address: str):
         'Подтверждаете регистрацию?'
     )
     return text
+
 
 def get_signup_complete(full_name: str):
     text = f'Пользователь {full_name} зарегистрирован'
@@ -150,3 +170,67 @@ def show_ingredients(category: str, items: list):
     text += '\nВыберите вариант или несколько (если возможно):'
     
     return text
+
+
+def get_show_cakes(cart: list[int]):
+    text = 'Торты\n'
+    if cart:
+        text += f'Тортов в корзине: {len(cart)}'
+
+    return text
+
+
+def get_cake_details(cake: Cake):
+    text = f'Торт {cake.title} за {cake.get_price()}'
+
+    return text
+
+
+def get_cart_details(cakes: list[Cake]):
+    if not cakes:
+        text = 'Корзина пуста'
+    else:
+        text = (
+            f'Позиций в корзине: {len(cakes)}\n'
+            'Тут список тортов имя – цена\n'
+            'Сумма всех позиций\n'
+            'Нажмите на кнопку с названием торта чтобы удалить из корзины'
+        )
+
+    return text
+
+
+def get_confirm_create_order(
+        cakes: list[Cake],
+        delivery_date,
+        delivery_time,
+        promocode: Promocode,
+        comment: str
+):
+    text = (
+        'Подтвердите создание заказа\n'
+        f'Всего {len(cakes)} позиций\n'
+        'Список\n'
+    )
+
+    if delivery_date:
+        text += f'Дата: {delivery_date}\n'
+
+    if delivery_time:
+        text += f'Время: {delivery_time}\n'
+
+    if promocode:
+        text += f'Использован промокод {promocode.title} размер скидки в %\n'
+        price = '{зачеркнутая старая цена} {цена с учетом промокода}'
+    else:
+        price = '{цена}'
+
+    text += f'Цена: {price}'
+
+    if comment:
+        text += (
+            'Комментарий заказчика:\n'
+            f'{comment}\n'
+        )
+
+    text += 'Создать заказ?'
