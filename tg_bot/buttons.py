@@ -21,8 +21,8 @@ ADD_COMMENT = CallbackButton('Добавить комментарий', Callback
 SELECT_DATE = CallbackButton('Изменить дату и время', Callback.SELECT_DATE)
 CONFIRM_CREATE_ORDER = CallbackButton('Создать заказ', Callback.YES)
 CUSTOM_CAKE = CallbackButton(
-    'Заказать новый (не работает)',
-    Callback.MAIN_MENU
+    'Сделать свой',
+    Callback.CREATE_CAKE
 )
 DELETE_USER = CallbackButton(
     'Удалить пользователя (для тестов)',
