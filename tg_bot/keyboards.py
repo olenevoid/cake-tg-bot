@@ -159,7 +159,7 @@ def get_create_order_menu():
     buttons = split_to_sublists(buttons, 2)
 
     buttons.append([static_buttons.SELECT_DATE])
-
+    buttons.append([static_buttons.CONFIRM_CREATE_ORDER])
     buttons.append([static_buttons.MAIN_MENU])
 
     return InlineKeyboardMarkup(buttons)
