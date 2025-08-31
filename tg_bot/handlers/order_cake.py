@@ -147,6 +147,8 @@ async def create_order(update: Update, context: CallbackContext):
             f'{comment}\n'
         )
 
+    text += 'Создать заказ?'
+
     if context.user_data.get('new_message'):
         context.user_data['new_message'] = False
         await context.bot.send_message(
