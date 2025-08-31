@@ -77,6 +77,10 @@ def get_order_cake_conversation_handler():
                 CallbackQueryHandler(
                     order_cake.add_time,
                     get_pattern(Callback.ADD_TIME)
+                ),
+                CallbackQueryHandler(
+                    order_cake.create_order,
+                    Callback.YES
                 )
             ],
             State.INPUT_PROMOCODE: [

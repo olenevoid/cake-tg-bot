@@ -3,7 +3,7 @@ import tg_bot.keyboards as keyboards
 from telegram.ext import CallbackContext
 import tg_bot.strings as strings
 from tg_bot.handlers.states import State
-from demo_data.demo_db import get_cakes, get_cake, find_user
+from demo_data.demo_db import get_cakes, get_cake, find_user, add_order
 from tg_bot.callbacks import parse_callback_data_string
 import tg_bot.handlers.registration as registration
 import tg_bot.validators as validators
@@ -266,3 +266,33 @@ async def add_time(update: Update, context: CallbackContext):
     context.user_data['time'] = time
 
     return await confirm_create_order(update, context)
+
+
+async def create_order(update: Update, context: CallbackContext):
+    tg_id = update.effective_chat.id
+    user = find_user(tg_id)
+    delivery_date = context.user_data.get('date')
+    delivery_time = context. user_data.get('time')
+    promocode = context.user_data.get('promocode')
+    comment = context.user_data.get('comment')
+
+    cakes = context.user_data.get('cart')
+    add_order(
+        user,
+        cakes,
+        user.address,
+        delivery_date,
+        delivery_time,
+        promocode,
+        comment
+    )
+
+    text = 'Заказ создан'
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_back_to_menu(),
+        parse_mode='HTML'
+    )
+
+    return State.CREATE_ORDER
