@@ -22,6 +22,8 @@ class Callback(StrEnum):
     ADD_TIME = auto()
     ADD_PROMO = auto()
     ADD_COMMENT = auto()
+    SELECT_LAYERS = auto()
+    SAVE_LAYERS = auto()
     MY_ORDERS = auto()
     SHOW_PRICELIST = auto()
     SIGNUP = auto()

@@ -201,5 +201,20 @@ def get_select_time_menu(times: list[time]):
     return InlineKeyboardMarkup(buttons)
 
 
+def get_select_layers(layers: dict):
+    buttons = []
+
+    for count, price in layers.items():
+        button = CallbackButton(
+            f'{count} за {price} р.',
+            Callback.SAVE_LAYERS,
+            layers=count
+        )
+        buttons.append(button)
+
+    buttons.append([static_buttons.MAIN_MENU])
+    return InlineKeyboardMarkup(buttons)
+    
+
 def get_my_orders():
     pass
