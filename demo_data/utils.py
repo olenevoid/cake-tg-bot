@@ -41,6 +41,22 @@ def add_to_json(json_filepath, new_data):
     return new_data
 
 
+def delete_from_json(json_filepath, pk):
+    """Удаляет запись по первичному ключу из JSON-файла."""
+    data = load_from_json(json_filepath)
+    
+    # Проверяем, существует ли запись с таким PK
+    if str(pk) not in data:
+        return False
+    
+    # Удаляем запись
+    del data[str(pk)]
+    
+    # Сохраняем обновленные данные
+    save_readable_json(data, json_filepath)
+    return True
+
+
 def calculate_order_total_price(order: 'Order') -> int:
     """Рассчитывает общую стоимость заказа с учетом:
     - стоимости всех тортов
