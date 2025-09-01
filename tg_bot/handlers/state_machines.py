@@ -14,7 +14,7 @@ def get_create_cake_conversation_handler():
     return ConversationHandler(
         entry_points=[
             CallbackQueryHandler(
-                create_cake.start_creating_cake,
+                create_cake.select_layers,
                 Callback.CREATE_CAKE
             ),
         ],
@@ -23,6 +23,14 @@ def get_create_cake_conversation_handler():
                 CallbackQueryHandler(
                     create_cake.start_creating_cake,
                     Callback.CREATE_CAKE
+                ),
+                CallbackQueryHandler(
+                    create_cake.select_layers,
+                    Callback.SELECT_LAYERS
+                ),
+                CallbackQueryHandler(
+                    create_cake.save_layers,
+                    Callback.SAVE_LAYERS
                 ),
             ]
         },
