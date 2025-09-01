@@ -253,6 +253,38 @@ def parse_order(order: dict) -> Order:
     )
 
 
+def parse_topping(topping: dict):
+    return Topping(
+        topping.get('pk'),
+        topping.get('title'),
+        topping.get('price')
+    )
+
+
+def parse_decor(decor: dict):
+    return Decor(
+        decor.get('pk'),
+        decor.get('title'),
+        decor.get('price')
+    )
+
+
+def parse_shape(shape: dict):
+    return Shape(
+        shape.get('pk'),
+        shape.get('title'),
+        shape.get('price')
+    )
+
+
+def parse_berry(berry: dict):
+    return Berry(
+        berry.get('pk'),
+        berry.get('title'),
+        berry.get('price')
+    )
+
+
 def get_order(pk: int) -> Order:
     order = find_value_in_dict(pk, ORDERS)
     if not order:
@@ -281,6 +313,11 @@ def get_topping(pk) -> Topping:
     )
 
 
+def get_toppings() -> list[Topping]:
+    toppings = load_from_json(TOPPINGS)
+    return [parse_topping(topping) for topping in toppings]
+
+
 def get_decor(pk) -> Decor:
     decor = find_value_in_dict(pk, DECORS)
     if not decor:
@@ -290,6 +327,11 @@ def get_decor(pk) -> Decor:
         decor.get('title'),
         decor.get('price')
     )
+
+
+def get_decors() -> list[Decor]:
+    decors = load_from_json(DECORS)
+    return [parse_decor(decor) for decor in decors]
 
 
 def get_shape(pk) -> Shape:
@@ -303,6 +345,11 @@ def get_shape(pk) -> Shape:
     )
 
 
+def get_shapes() -> list[Shape]:
+    shapes = load_from_json(SHAPES)
+    return [parse_shape(shape) for shape in shapes]
+
+
 def get_berry(pk) -> Berry:
     berry = find_value_in_dict(pk, BERRIES)
     if not berry:
@@ -312,6 +359,11 @@ def get_berry(pk) -> Berry:
         berry.get('title'),
         berry.get('price')
     )
+
+
+def get_berries() -> list[Berry]:
+    berries = load_from_json(BERRIES)
+    return [parse_berry(berry) for berry in berries]
 
 
 def get_ingredients(get_ingredient: callable, pks: list[int]) -> list:
