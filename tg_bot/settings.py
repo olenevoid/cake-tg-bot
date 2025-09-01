@@ -5,12 +5,20 @@ env.read_env()
 
 
 TG_BOT_TOKEN = env.str("TG_BOT_TOKEN")
-BUTTONS_PER_PAGE = 4
+
 
 # Цены за уровни торта
 LEVEL_1_PRICE = env.int("LEVEL_1_PRICE")
 LEVEL_2_PRICE = env.int("LEVEL_2_PRICE")
 LEVEL_3_PRICE = env.int("LEVEL_3_PRICE")
+
+
+LAYERS = {
+    1: LEVEL_1_PRICE,
+    2: LEVEL_2_PRICE,
+    3: LEVEL_3_PRICE
+}
+
 
 # Переменные для времени
 EVENING_HOUR = env.int("EVENING_HOUR", 18)  # По умолчанию 18:00
