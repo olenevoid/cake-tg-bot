@@ -315,7 +315,7 @@ def get_topping(pk) -> Topping:
 
 def get_toppings() -> list[Topping]:
     toppings = load_from_json(TOPPINGS)
-    return [parse_topping(topping) for topping in toppings]
+    return [parse_topping(topping) for topping in toppings.values()]
 
 
 def get_decor(pk) -> Decor:
@@ -331,7 +331,7 @@ def get_decor(pk) -> Decor:
 
 def get_decors() -> list[Decor]:
     decors = load_from_json(DECORS)
-    return [parse_decor(decor) for decor in decors]
+    return [parse_decor(decor) for decor in decors.values()]
 
 
 def get_shape(pk) -> Shape:
@@ -347,7 +347,7 @@ def get_shape(pk) -> Shape:
 
 def get_shapes() -> list[Shape]:
     shapes = load_from_json(SHAPES)
-    return [parse_shape(shape) for shape in shapes]
+    return [parse_shape(shape) for shape in shapes.values()]
 
 
 def get_berry(pk) -> Berry:
@@ -363,7 +363,7 @@ def get_berry(pk) -> Berry:
 
 def get_berries() -> list[Berry]:
     berries = load_from_json(BERRIES)
-    return [parse_berry(berry) for berry in berries]
+    return [parse_berry(berry) for berry in berries.values()]
 
 
 def get_ingredients(get_ingredient: callable, pks: list[int]) -> list:
