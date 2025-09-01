@@ -63,7 +63,7 @@ def create_test_json_files():
             "1": {
                 "pk": 1,
                 "customer": 2,
-                "cake": 1,
+                "cakes": [1],
                 "address": "пр. Ленина, д. 42",
                 "delivery_date": "2024-07-15",
                 "delivery_time": "14:00",
@@ -73,7 +73,7 @@ def create_test_json_files():
             "2": {
                 "pk": 2,
                 "customer": 1,
-                "cake": 2,
+                "cakes": [2],
                 "address": "ул. Пушкина, д. 10, кв. 25",
                 "delivery_date": "2024-07-16",
                 "delivery_time": "18:30",

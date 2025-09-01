@@ -221,7 +221,8 @@ def parse_user(user: dict):
 
 def parse_order(order: dict) -> Order:
     customer = get_user(order.get('customer'))
-    cake = get_cake(order.get('cake'))
+    cake_ids = order.get('cakes', [])
+    cakes = [get_cake(cake_id) for cake_id in cake_ids]
     promocode_id = order.get('promocode')
     promocode = get_promocode(promocode_id) if promocode_id else None
 
@@ -232,7 +233,7 @@ def parse_order(order: dict) -> Order:
     return Order(
         order.get('pk'),
         customer,
-        [cake],
+        cakes,
         order.get('address'),
         delivery_date,
         delivery_time,
