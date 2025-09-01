@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardMarkup
 from tg_bot.callbacks import Callback, CallbackButton
 from utils import split_to_sublists
-from demo_data.models import User, Cake
+from demo_data.models import User, Cake, Shape, Berry, Topping, Decor
 import tg_bot.buttons as static_buttons
 from datetime import date, time
 
@@ -216,7 +216,75 @@ def get_select_layers(layers: dict):
 
     buttons.append([static_buttons.MAIN_MENU])
     return InlineKeyboardMarkup(buttons)
-    
+
+
+def get_select_decor(decors: list[Decor]):
+    buttons = []
+
+    for decor in decors:
+        button = CallbackButton(
+            decor.title,
+            Callback.ADD_DECOR,
+            decor_pk=decor.pk
+        )
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append([static_buttons.MAIN_MENU])
+    return InlineKeyboardMarkup(buttons)
+
+
+def get_select_shape(shapes: list[Shape]):
+    buttons = []
+
+    for shape in shapes:
+        button = CallbackButton(
+            shape.title,
+            Callback.ADD_SHAPE,
+            shape_pk=shape.pk
+        )
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append([static_buttons.MAIN_MENU])
+    return InlineKeyboardMarkup(buttons)
+
+
+def get_select_topping(toppings: list[Topping]):
+    buttons = []
+
+    for topping in toppings:
+        button = CallbackButton(
+            topping.title,
+            Callback.ADD_TOPPING,
+            topping_pk=topping.pk
+        )
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append([static_buttons.MAIN_MENU])
+    return InlineKeyboardMarkup(buttons)
+
+
+def get_select_berry(berries: list[Berry]):
+    buttons = []
+
+    for berry in berries:
+        button = CallbackButton(
+            berry.title,
+            Callback.ADD_BERRY,
+            berry_pk=berry.pk
+        )
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append([static_buttons.MAIN_MENU])
+    return InlineKeyboardMarkup(buttons)
+
 
 def get_my_orders():
     pass
