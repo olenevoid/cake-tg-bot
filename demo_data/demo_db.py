@@ -187,6 +187,8 @@ def delete_user_from_db(tg_id):
 
 def get_role(pk) -> Role:
     role = find_value_in_dict(pk, ROLES)
+    if not role:
+        return None
     return Role(
         role.get('pk'),
         role.get('title')
@@ -195,11 +197,15 @@ def get_role(pk) -> Role:
 
 def get_user(pk) -> User:
     user = find_value_in_dict(pk, USERS)
+    if not user:
+        return None
     return parse_user(user)
 
 
 def get_promocode(pk) -> Promocode:
     promocode = find_value_in_dict(pk, PROMOCODES)
+    if not promocode:
+        return None
     return Promocode(
         promocode.get('pk'),
         promocode.get('title'),
@@ -209,6 +215,8 @@ def get_promocode(pk) -> Promocode:
 
 def parse_user(user: dict):
     role = get_role(user.get('role'))
+    if not role:
+        return None
     return User(
         user.get('pk'),
         user.get('tg_id'),
@@ -221,6 +229,9 @@ def parse_user(user: dict):
 
 def parse_order(order: dict) -> Order:
     customer = get_user(order.get('customer'))
+    if not customer:
+        return None
+    
     cake_ids = order.get('cakes', [])
     cakes = [get_cake(cake_id) for cake_id in cake_ids]
     promocode_id = order.get('promocode')
@@ -244,6 +255,8 @@ def parse_order(order: dict) -> Order:
 
 def get_order(pk: int) -> Order:
     order = find_value_in_dict(pk, ORDERS)
+    if not order:
+        return None
     return parse_order(order)
 
 
@@ -251,12 +264,16 @@ def get_orders() -> list[Order]:
     orders_data = load_from_json(ORDERS)
     parsed_orders = []
     for _, order_data in orders_data.items():
-        parsed_orders.append(parse_order(order_data))
+        parsed_order = parse_order(order_data)
+        if parsed_order:
+            parsed_orders.append(parsed_order)
     return parsed_orders
 
 
 def get_topping(pk) -> Topping:
     topping = find_value_in_dict(pk, TOPPINGS)
+    if not topping:
+        return None
     return Topping(
         topping.get('pk'),
         topping.get('title'),
@@ -266,6 +283,8 @@ def get_topping(pk) -> Topping:
 
 def get_decor(pk) -> Decor:
     decor = find_value_in_dict(pk, DECORS)
+    if not decor:
+        return None
     return Decor(
         decor.get('pk'),
         decor.get('title'),
@@ -275,6 +294,8 @@ def get_decor(pk) -> Decor:
 
 def get_shape(pk) -> Shape:
     shape = find_value_in_dict(pk, SHAPES)
+    if not shape:
+        return None
     return Shape(
         shape.get('pk'),
         shape.get('title'),
@@ -284,6 +305,8 @@ def get_shape(pk) -> Shape:
 
 def get_berry(pk) -> Berry:
     berry = find_value_in_dict(pk, BERRIES)
+    if not berry:
+        return None
     return Berry(
         berry.get('pk'),
         berry.get('title'),
@@ -294,7 +317,9 @@ def get_berry(pk) -> Berry:
 def get_ingredients(get_ingredient: callable, pks: list[int]) -> list:
     ingredients = []
     for pk in pks:
-        ingredients.append(get_ingredient(pk))
+        ingredient = get_ingredient(pk)
+        if ingredient:
+            ingredients.append(ingredient)
     return ingredients
 
 
@@ -339,6 +364,8 @@ def parse_cake(cake: dict) -> Cake:
 
 def get_cake(pk: int) -> Cake:
     cake: dict = find_value_in_dict(pk, CAKES)
+    if not cake:
+        return None
     return parse_cake(cake)
 
 
@@ -348,5 +375,6 @@ def get_cakes() -> list[Cake]:
 
     for _, cake in cakes.items():
         parsed_cake = parse_cake(cake)
-        parsed_cakes. append(parsed_cake)
+        if parsed_cake:
+            parsed_cakes.append(parsed_cake)
     return parsed_cakes
