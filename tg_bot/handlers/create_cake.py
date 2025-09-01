@@ -9,8 +9,12 @@ from tg_bot.callbacks import parse_callback_data_string
 
 async def start_creating_cake(update: Update, context: CallbackContext):
     await update.callback_query.answer()
+    layers = context.user_data.get('layers')
 
-    text = 'Тут что-то будет'
+    text = 'Тут что-то будет\n'
+
+    if layers:
+        text += f'Количество слоев: {layers} цена: {LAYERS.get(layers)}\n'
 
     await update.callback_query.edit_message_text(
         text,

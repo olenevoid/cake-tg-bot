@@ -212,6 +212,8 @@ def get_select_layers(layers: dict):
         )
         buttons.append(button)
 
+    buttons = split_to_sublists(buttons, 2)
+
     buttons.append([static_buttons.MAIN_MENU])
     return InlineKeyboardMarkup(buttons)
     
