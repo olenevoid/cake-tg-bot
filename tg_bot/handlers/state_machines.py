@@ -30,8 +30,16 @@ def get_create_cake_conversation_handler():
                 ),
                 CallbackQueryHandler(
                     create_cake.save_layers,
-                    Callback.SAVE_LAYERS
+                    get_pattern(Callback.SAVE_LAYERS)
                 ),
+                CallbackQueryHandler(
+                    create_cake.save_shape,
+                    get_pattern(Callback.ADD_SHAPE)
+                ),
+                CallbackQueryHandler(
+                    create_cake.save_topping,
+                    get_pattern(Callback.ADD_TOPPING)
+                )
             ]
         },
         map_to_parent={
