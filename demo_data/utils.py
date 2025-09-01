@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timedelta
 
 
 def save_readable_json(dictionary, filepath):
@@ -38,3 +39,34 @@ def add_to_json(json_filepath, new_data):
     data[str(new_pk)] = new_data
     save_readable_json(data, json_filepath)
     return new_data
+
+
+def calculate_order_total_price(order: 'Order') -> int:
+    """Рассчитывает общую стоимость заказа с учетом:
+    - стоимости всех тортов
+    - срочной доставки (если менее 24 часов)
+    - примененных промокодов
+    """
+    # Суммируем стоимость всех тортов в заказе
+    total = sum(cake.get_price() for cake in order.cakes)
+
+    # Проверяем, является ли доставка срочной
+    if order.delivery_time:
+        delivery_datetime = datetime.combine(
+            order.delivery_date, 
+            order.delivery_time
+        )
+        time_until_delivery = delivery_datetime - datetime.now()
+
+        # Если доставка в течение 24 часов, добавляем наценку 20%
+        if time_until_delivery <= timedelta(hours=24):
+            total *= 1.2
+
+    # Применяем скидку по промокоду
+    if order.promocode and order.promocode.is_active:
+        if order.promocode.title == "ПЕРВЫЙ ЗАКАЗ":
+            total *= 0.9  # 10% скидка
+        elif order.promocode.title == "ДЕНЬ РОЖДЕНИЯ":
+            total *= 0.85  # 15% скидка
+
+    return round(total)

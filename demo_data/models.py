@@ -1,7 +1,8 @@
 #TODO Сделать модели в ДБ по образу
 from dataclasses import dataclass, field
-from datetime import date, time, datetime, timedelta
+from datetime import date, time
 from typing import Optional
+from .utils import calculate_order_total_price
 
 
 @dataclass
@@ -132,23 +133,5 @@ class Order:
     comment: Optional[str] = None
 
     def get_total_price(self):
-        # Суммируем стоимость всех тортов в заказе
-        total = sum(cake.get_price() for cake in self.cakes)
-
-        # Проверяем, является ли доставка срочной (в течение 24 часов)
-        if self.delivery_time:
-            delivery_datetime = datetime.combine(self.delivery_date, self.delivery_time)
-            time_until_delivery = delivery_datetime - datetime.now()
-
-            # Если доставка в течение 24 часов, добавляем наценку 20%
-            if time_until_delivery <= timedelta(hours=24):
-                total *= 1.2
-
-        # Применяем скидку по промокоду, если он активен
-        if self.promocode and self.promocode.is_active:
-            if self.promocode.title == "ПЕРВЫЙ ЗАКАЗ":
-                total *= 0.9  # 10% скидка
-            elif self.promocode.title == "ДЕНЬ РОЖДЕНИЯ":
-                total *= 0.85  # 15% скидка
-
-        return round(total)  # Округляем до целого числа
+        from .utils import calculate_order_total_price
+        return calculate_order_total_price(self)
