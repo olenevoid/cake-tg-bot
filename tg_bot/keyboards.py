@@ -289,11 +289,12 @@ def get_select_berry(berries: list[Berry]):
 def get_confirm_create_cake():
     buttons = [
         static_buttons.SELECT_DECOR,
-        static_buttons.SELECT_BERRY,        
+        static_buttons.SELECT_BERRY,
+        static_buttons.ADD_SIGN
     ]
-    
+
     buttons = split_to_sublists(buttons, 2)
-    
+
     buttons.append([static_buttons.YES])
     buttons.append([static_buttons.MAIN_MENU])
     return InlineKeyboardMarkup(buttons)
