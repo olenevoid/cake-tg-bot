@@ -121,7 +121,7 @@ def add_cake(
         'berries': berry_pks
     }
 
-    add_to_json(CAKES, cake)
+    return add_to_json(CAKES, cake)
 
 
 def add_order(
