@@ -172,7 +172,7 @@ def get_select_date_menu(dates: list[date]):
 
     for date_ in dates:
         button = CallbackButton(
-            f'{date_.day}.{date_.month}',
+            f'{date_.strftime('%d.%m')}',
             Callback.ADD_DATE,
             date=date_.isoformat()
         )
@@ -190,7 +190,7 @@ def get_select_time_menu(times: list[time]):
 
     for time_ in times:
         button = CallbackButton(
-            f'{time_.hour}:{time_.minute}',
+            f'{time_.strftime('%H:%M')}',
             Callback.ADD_TIME,
             time=time_.isoformat()
         )
