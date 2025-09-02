@@ -257,3 +257,5 @@ def get_confirm_create_order(
         )
 
     text += 'Создать заказ?'
+
+    return text
