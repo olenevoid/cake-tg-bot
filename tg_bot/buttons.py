@@ -19,6 +19,8 @@ CREATE_ORDER = CallbackButton('Создать заказ', Callback.CREATE_ORDER
 ADD_PROMO = CallbackButton('Добавить промокод', Callback.ADD_PROMO)
 ADD_COMMENT = CallbackButton('Добавить комментарий', Callback.ADD_COMMENT)
 SELECT_DATE = CallbackButton('Изменить дату и время', Callback.SELECT_DATE)
+SELECT_DECOR = CallbackButton('Выбрать декор', Callback.SELECT_DECOR)
+SELECT_BERRY = CallbackButton('Выбрать ягоду', Callback.SELECT_BERRY)
 CONFIRM_CREATE_ORDER = CallbackButton('Создать заказ', Callback.YES)
 CUSTOM_CAKE = CallbackButton(
     'Сделать свой',

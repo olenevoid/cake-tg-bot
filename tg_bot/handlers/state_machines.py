@@ -39,7 +39,24 @@ def get_create_cake_conversation_handler():
                 CallbackQueryHandler(
                     create_cake.save_topping,
                     get_pattern(Callback.ADD_TOPPING)
+                ),
+                CallbackQueryHandler(
+                    create_cake.select_berry,
+                    Callback.SELECT_BERRY
+                ),
+                CallbackQueryHandler(
+                    create_cake.select_decor,
+                    Callback.SELECT_DECOR
+                ),
+                CallbackQueryHandler(
+                    create_cake.save_berry,
+                    get_pattern(Callback.ADD_BERRY)
+                ),
+                CallbackQueryHandler(
+                    create_cake.save_decor,
+                    get_pattern(Callback.ADD_DECOR)
                 )
+                
             ]
         },
         map_to_parent={

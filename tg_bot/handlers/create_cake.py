@@ -35,7 +35,7 @@ async def start_creating_cake(update: Update, context: CallbackContext):
 
     await update.callback_query.edit_message_text(
         text,
-        reply_markup=keyboards.get_back_to_menu(),
+        reply_markup=keyboards.get_confirm_create_cake(),
         parse_mode='HTML'
     )
     return State.CREATE_CAKE
@@ -109,5 +109,53 @@ async def save_topping(update: Update, context: CallbackContext):
 
     if topping_pk:
         context.user_data['topping_pk'] = topping_pk
+
+    return await start_creating_cake(update, context)
+
+
+async def select_decor(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    decor = db.get_decors()
+    text = 'Декор'
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_select_decor(decor),
+        parse_mode='HTML'
+    )
+    return State.CREATE_CAKE
+
+
+async def save_decor(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    params = parse_callback_data_string(update.callback_query.data).params
+    decor_pk = params.get('decor_pk')
+
+    if decor_pk:
+        context.user_data['decor_pk'] = decor_pk
+
+    return await start_creating_cake(update, context)
+
+
+async def select_berry(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    berries = db.get_berries()
+    text = 'Декор'
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_select_decor(berries),
+        parse_mode='HTML'
+    )
+    return State.CREATE_CAKE
+
+
+async def save_berry(update: Update, context: CallbackContext):
+    await update.callback_query.answer()
+    params = parse_callback_data_string(update.callback_query.data).params
+    berry_pk = params.get('berry_pk')
+
+    if berry_pk:
+        context.user_data['berry_pk'] = berry_pk
 
     return await start_creating_cake(update, context)

@@ -18,6 +18,8 @@ class Callback(StrEnum):
     CREATE_ORDER = auto()
     CREATE_CAKE = auto()
     SELECT_DATE = auto()
+    SELECT_DECOR = auto()
+    SELECT_BERRY = auto()
     ADD_DATE = auto()
     ADD_TIME = auto()
     ADD_DECOR = auto()
