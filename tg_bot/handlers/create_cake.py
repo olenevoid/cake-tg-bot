@@ -213,7 +213,8 @@ async def save_custom_cake(update: Update, context: CallbackContext):
         layers,
         sign,
         [decor.pk],
-        [berry.pk]
+        [berry.pk],
+        True
     )
 
     cart = context.user_data.get('cart')

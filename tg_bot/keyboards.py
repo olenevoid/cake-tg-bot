@@ -79,16 +79,17 @@ def get_order_cake():
 
 
 def get_select_cake(cakes: list[Cake], cakes_per_row: int = 2):
-    
+
     buttons = []
-    
+
     for cake in cakes:
-        button = CallbackButton(
-            cake.title,
-            Callback.SHOW_CAKE,
-            cake_pk=cake.pk
-        )
-        buttons.append(button)
+        if not cake.custom:
+            button = CallbackButton(
+                cake.title,
+                Callback.SHOW_CAKE,
+                cake_pk=cake.pk
+            )
+            buttons.append(button)
 
     buttons = split_to_sublists(buttons, cakes_per_row)
 
