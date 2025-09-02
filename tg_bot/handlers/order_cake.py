@@ -95,12 +95,6 @@ async def clear_cart(update: Update, context: CallbackContext):
 
 
 async def confirm_create_order(update: Update, context: CallbackContext):
-    tg_id = update.effective_chat.id
-    user = find_user(tg_id)
-
-    if not user:
-        return await registration.start_registration(update, context)
-
     cart = context.user_data.get('cart')
     cakes = []
     promocode = None
@@ -188,7 +182,11 @@ async def add_comment(update: Update, context: CallbackContext):
 
 
 async def select_date(update: Update, context: CallbackContext):
-    await update.callback_query.answer()
+    tg_id = update.effective_chat.id
+    user = find_user(tg_id)
+
+    if not user:
+        return await registration.start_registration(update, context)
 
     dates = get_available_dates()
 

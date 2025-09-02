@@ -227,7 +227,6 @@ def get_registration_conversation_handler():
                     Callback.YES
                 ),
                 CallbackQueryHandler(registration.input_name, Callback.REDO),
-                CallbackQueryHandler(order_cake.confirm_create_order, Callback.CREATE_ORDER)
             ]
         },
         map_to_parent={

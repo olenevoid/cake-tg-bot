@@ -140,10 +140,10 @@ def get_cart_menu(cakes: list[Cake]):
 
 def get_signup_complete_menu(cart: list[Cake]):
     buttons = []
-    
+
     if cart:
         buttons.append(
-            [static_buttons.CREATE_ORDER]
+            [static_buttons.SHOW_CART]
         )
 
     buttons.append([static_buttons.MAIN_MENU])
