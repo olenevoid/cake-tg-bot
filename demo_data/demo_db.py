@@ -15,7 +15,8 @@ from demo_data.utils import (
     find_value_in_dict,
     load_from_json,
     add_to_json,
-    find_by_field
+    find_by_field, 
+    delete_from_json
 )
 from os import path
 from datetime import date, time
@@ -181,8 +182,7 @@ def add_customer(
 
 def delete_user_from_db(tg_id):
     user = find_user(tg_id)
-    if user:
-        users.remove(user)
+    delete_from_json(USERS, user.pk)
 
 
 def get_role(pk) -> Role:
