@@ -22,6 +22,7 @@ SELECT_DATE = CallbackButton('Изменить дату и время', Callback
 SELECT_DECOR = CallbackButton('Выбрать декор', Callback.SELECT_DECOR)
 SELECT_BERRY = CallbackButton('Выбрать ягоду', Callback.SELECT_BERRY)
 CONFIRM_CREATE_ORDER = CallbackButton('Создать заказ', Callback.YES)
+ADD_SIGN = CallbackButton('Добавить надпись', Callback.ADD_SIGN)
 CUSTOM_CAKE = CallbackButton(
     'Сделать свой',
     Callback.CREATE_CAKE
