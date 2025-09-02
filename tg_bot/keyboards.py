@@ -300,5 +300,16 @@ def get_confirm_create_cake():
     return InlineKeyboardMarkup(buttons)
 
 
+def get_cake_created_menu():
+    buttons = [
+        static_buttons.SHOW_CART,
+        static_buttons.MAIN_MENU
+    ]
+
+    buttons = split_to_sublists(buttons, 1)
+
+    return InlineKeyboardMarkup(buttons)
+
+
 def get_my_orders():
     pass
