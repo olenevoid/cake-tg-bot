@@ -6,7 +6,16 @@
 # https://core.telegram.org/bots/api#formatting-options
 
 
-from demo_data.models import User, Order, Cake, Promocode
+from demo_data.models import (
+    User,
+    Order,
+    Cake,
+    Promocode,
+    Shape,
+    Topping,
+    Decor,
+    Berry
+)
 
 
 # Начало заказа
@@ -117,6 +126,12 @@ ORDER_CREATED = (
 
 # Торты
 CAKES_LIST = '🎂 <b>Наши торты</b>\n\nВыберите понравившийся торт:'
+
+
+INPUT_SIGN = 'Введите надпись'
+
+
+CAKE_CREATED = 'Торт создан и добавлен в корзину'
 
 
 def get_confirm_signup(full_name: str, phone: str, address: str):
@@ -257,5 +272,84 @@ def get_confirm_create_order(
         )
 
     text += 'Создать заказ?'
+
+    return text
+
+
+def get_custom_cake(
+        layers,
+        layers_price,
+        shape,
+        decor,
+        berry,
+        topping,
+        sign
+):
+    text = 'Тут что-то будет\n'
+
+    if layers:
+        text += f'Количество слоев: {layers} цена: {layers_price}\n'
+
+    if shape:
+        text += f'Форма: {shape.title} цена: {shape.price}\n'
+
+    if decor:
+        text += f'Декор: {decor.title} цена: \n'
+
+    if berry:
+        text += f'Ягоды: {berry.title} цена: \n'
+
+    if topping:
+        text += f'Топпинг: {topping.title} цена: \n'
+
+    if sign:
+        text += f'Надпись: {sign}'
+
+    text += 'Добавить торт в корзину?'
+
+    return text
+
+
+def get_number_of_layers(layers: dict):
+    text = 'Количество коржей:\n'
+
+    for number, price in layers:
+        text += f'Слоев: {number} цена: {price}\n'
+
+    return text
+
+
+def get_shapes(shapes: list[Shape]):
+    text = 'Формы\n'
+
+    for shape in shapes:
+        text += f'{shape.title} {shape.price}\n'
+
+    return text
+
+
+def get_toppings(toppings: list[Topping]):
+    text = 'Топпинги\n'
+
+    for topping in toppings:
+        text += f'{topping.title} {topping.price}\n'
+
+    return text
+
+
+def get_decor(decors: list[Decor]):
+    text = 'Декор\n'
+
+    for decor in decors:
+        text += f'{decor.title} {decor.price}\n'
+
+    return text
+
+
+def get_berries(berries: list[Berry]):
+    text = 'Ягода\n'
+
+    for berry in berries:
+        text += f'{berry.title} {berry.price}\n'
 
     return text

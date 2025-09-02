@@ -17,27 +17,15 @@ async def start_creating_cake(update: Update, context: CallbackContext):
     topping = db.get_topping(context.user_data.get('topping_pk'))
     sign = context.user_data.get('sign')
 
-    text = 'Тут что-то будет\n'
-
-    if layers:
-        text += f'Количество слоев: {layers} цена: {LAYERS.get(layers)}\n'
-
-    if shape:
-        text += f'Форма: {shape.title} цена: {shape.price}\n'
-
-    if decor:
-        text += f'Декор: {decor.title} цена: \n'
-
-    if berry:
-        text += f'Ягоды: {berry.title} цена: \n'
-
-    if topping:
-        text += f'Топпинг: {topping.title} цена: \n'
-
-    if sign:
-        text += f'Надпись: {sign}'
-
-    text += 'Добавить торт в корзину?'
+    text = strings.get_custom_cake(
+        layers,
+        LAYERS.get(layers),
+        shape,
+        decor,
+        berry,
+        topping,
+        sign
+    )
 
     keyboard = keyboards.get_confirm_create_cake()
     state = State.CREATE_CAKE
@@ -62,10 +50,8 @@ async def start_creating_cake(update: Update, context: CallbackContext):
 async def select_layers(update: Update, context: CallbackContext):
     await update.callback_query.answer()
 
-    text = 'Количество слоев'
-
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_number_of_layers(),
         reply_markup=keyboards.get_select_layers(LAYERS),
         parse_mode='HTML'
     )
@@ -86,10 +72,9 @@ async def save_layers(update: Update, context: CallbackContext):
 async def select_shape(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     shapes = db.get_shapes()
-    text = 'Форма'
 
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_shapes(shapes),
         reply_markup=keyboards.get_select_shape(shapes),
         parse_mode='HTML'
     )
@@ -110,10 +95,9 @@ async def save_shape(update: Update, context: CallbackContext):
 async def select_topping(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     toppings = db.get_toppings()
-    text = 'Форма'
 
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_toppings(toppings),
         reply_markup=keyboards.get_select_topping(toppings),
         parse_mode='HTML'
     )
@@ -134,10 +118,9 @@ async def save_topping(update: Update, context: CallbackContext):
 async def select_decor(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     decor = db.get_decors()
-    text = 'Декор'
 
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_decor(decor),
         reply_markup=keyboards.get_select_decor(decor),
         parse_mode='HTML'
     )
@@ -158,10 +141,9 @@ async def save_decor(update: Update, context: CallbackContext):
 async def select_berry(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     berries = db.get_berries()
-    text = 'Декор'
 
     await update.callback_query.edit_message_text(
-        text,
+        strings.get_berries(berries),
         reply_markup=keyboards.get_select_berry(berries),
         parse_mode='HTML'
     )
@@ -182,7 +164,7 @@ async def save_berry(update: Update, context: CallbackContext):
 async def input_sign(update: Update, context: CallbackContext):
     await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text='Ведите надпись',
+            text=strings.INPUT_SIGN,
             parse_mode='HTML',
     )
 
@@ -225,7 +207,7 @@ async def save_custom_cake(update: Update, context: CallbackContext):
     context.user_data['cart'] = cart
 
     await update.callback_query.edit_message_text(
-        'Торт создан и добавлен в корзину',
+        strings.CAKE_CREATED,
         reply_markup=keyboards.get_cake_created_menu(),
         parse_mode='HTML'
     )
