@@ -144,7 +144,7 @@ async def select_berry(update: Update, context: CallbackContext):
 
     await update.callback_query.edit_message_text(
         text,
-        reply_markup=keyboards.get_select_decor(berries),
+        reply_markup=keyboards.get_select_berry(berries),
         parse_mode='HTML'
     )
     return State.CREATE_CAKE
