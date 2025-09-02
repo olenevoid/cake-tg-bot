@@ -9,12 +9,13 @@ from demo_data import demo_db as db
 
 
 async def start_creating_cake(update: Update, context: CallbackContext):
-    await update.callback_query.answer()
     layers = context.user_data.get('layers')
     shape = db.get_shape(context.user_data.get('shape_pk'))
     decor = db.get_decor(context.user_data.get('decor_pk'))
-    berry = db.get_berry(context.user_data.get('berry_pk'))
+    berry_pk = context.user_data.get('berry_pk')
+    berry = db.get_berry(berry_pk)
     topping = db.get_topping(context.user_data.get('topping_pk'))
+    sign = context.user_data.get('sign')
 
     text = 'Тут что-то будет\n'
 
@@ -33,12 +34,29 @@ async def start_creating_cake(update: Update, context: CallbackContext):
     if topping:
         text += f'Топпинг: {topping.title} цена: \n'
 
+    if sign:
+        text += f'Надпись: {sign}'
+
+    text += 'Добавить торт в корзину?'
+
+    keyboard = keyboards.get_confirm_create_cake()
+    state = State.CREATE_CAKE
+    if context.user_data.get('new_message'):
+        context.user_data['new_message'] = False
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            reply_markup=keyboard,
+            parse_mode='HTML',
+        )
+        return state
+
     await update.callback_query.edit_message_text(
         text,
-        reply_markup=keyboards.get_confirm_create_cake(),
+        reply_markup=keyboard,
         parse_mode='HTML'
     )
-    return State.CREATE_CAKE
+    return state
 
 
 async def select_layers(update: Update, context: CallbackContext):
@@ -159,3 +177,56 @@ async def save_berry(update: Update, context: CallbackContext):
         context.user_data['berry_pk'] = berry_pk
 
     return await start_creating_cake(update, context)
+
+
+async def input_sign(update: Update, context: CallbackContext):
+    await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text='Ведите надпись',
+            parse_mode='HTML',
+    )
+
+    return State.INPUT_SIGN
+
+
+async def add_sign(update: Update, context: CallbackContext):
+    sign = update.message.text
+    context.user_data['sign'] = sign
+    context.user_data['new_message'] = True
+    return await start_creating_cake(update, context)
+
+
+async def save_custom_cake(update: Update, context: CallbackContext):
+    layers = context.user_data.get('layers')
+    shape = db.get_shape(context.user_data.get('shape_pk'))
+    decor = db.get_decor(context.user_data.get('decor_pk'))
+    berry = db.get_berry(context.user_data.get('berry_pk'))
+    topping = db.get_topping(context.user_data.get('topping_pk'))
+    sign = context.user_data.get('sign')
+
+    cake = db.add_cake(
+        f'{shape.title} {topping.title}',
+        None,
+        None,
+        topping.pk,
+        shape.pk,
+        layers,
+        sign,
+        [decor.pk],
+        [berry.pk]
+    )
+
+    cart = context.user_data.get('cart')
+    if cart is None:
+        cart = []
+
+    cart.append(cake.get('pk'))
+    context.user_data['cart'] = cart
+
+    await update.callback_query.edit_message_text(
+        'Торт создан и добавлен в корзину',
+        reply_markup=keyboards.get_cake_created_menu(),
+        parse_mode='HTML'
+    )
+
+    return State.ORDER_CAKE

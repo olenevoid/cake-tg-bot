@@ -55,12 +55,23 @@ def get_create_cake_conversation_handler():
                 CallbackQueryHandler(
                     create_cake.save_decor,
                     get_pattern(Callback.ADD_DECOR)
+                ),
+                CallbackQueryHandler(
+                    create_cake.input_sign,
+                    Callback.ADD_SIGN
+                ),
+                CallbackQueryHandler(
+                    create_cake.save_custom_cake,
+                    Callback.YES
                 )
-                
+            ],
+            State.INPUT_SIGN: [
+                MessageHandler(filters.TEXT, create_cake.add_sign)
             ]
         },
         map_to_parent={
             State.MAIN_MENU: State.MAIN_MENU,
+            State.ORDER_CAKE: State.ORDER_CAKE
         },
         fallbacks=[
             CommandHandler("start", main_menu.start),
@@ -78,6 +89,10 @@ def get_order_cake_conversation_handler():
             CallbackQueryHandler(
                 order_cake.show_cakes,
                 get_pattern(Callback.SHOW_CAKES)
+            ),
+            CallbackQueryHandler(
+                order_cake.show_cart,
+                get_pattern(Callback.SHOW_CART)
             )
         ],
         states={
