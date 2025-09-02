@@ -105,7 +105,8 @@ def add_cake(
         number_of_layers: int | None,
         sign: str | None,
         decor_pks: list[int],
-        berry_pks: list[int]
+        berry_pks: list[int],
+        custom: bool = False
 ):
 
     cake = {
@@ -118,7 +119,8 @@ def add_cake(
         'number_of_layers': number_of_layers,
         'sign': sign,
         'decor': decor_pks,
-        'berries': berry_pks
+        'berries': berry_pks,
+        'custom': custom
     }
 
     return add_to_json(CAKES, cake)
@@ -394,6 +396,7 @@ def parse_cake(cake: dict) -> Cake:
     # Получаем цену и изображение, если они есть
     price = cake.get('price')
     image = cake.get('image')
+    custom = cake.get('custom')
 
     parsed_cake = Cake(
         cake.get('pk'),
@@ -404,7 +407,7 @@ def parse_cake(cake: dict) -> Cake:
         shape,
         number_of_layers,
         sign,
-        False,  # custom - по умолчанию False
+        custom,
         decors,
         berries
     )
