@@ -296,7 +296,7 @@ def get_confirm_create_cake():
 
     buttons = split_to_sublists(buttons, 2)
 
-    buttons.append([static_buttons.YES])
+    buttons.insert(0, [static_buttons.YES])
     buttons.append([static_buttons.MAIN_MENU])
     return InlineKeyboardMarkup(buttons)
 
