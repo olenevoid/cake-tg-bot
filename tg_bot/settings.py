@@ -5,7 +5,8 @@ env.read_env()
 
 
 TG_BOT_TOKEN = env.str("TG_BOT_TOKEN")
-
+STATIC_FOLDER = 'static'
+PERSONAL_DATA_CONSENT_FILENAME = 'personal_data_consent.pdf'
 
 # Цены за уровни торта
 LEVEL_1_PRICE = env.int("LEVEL_1_PRICE")

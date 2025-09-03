@@ -7,6 +7,7 @@ import tg_bot.validators as validators
 from demo_data.demo_db import add_customer, delete_user_from_db
 from tg_bot.handlers.states import State
 import tg_bot.handlers.main_menu as main_menu
+from os import path
 
 
 async def start_registration(update: Update, context: CallbackContext):
@@ -23,8 +24,15 @@ async def start_registration(update: Update, context: CallbackContext):
 
 async def send_personal_data_consent(update: Update, context: CallbackContext):
     await update.callback_query.answer()
-
-    #TODO: Добавить отправку файла с соглашением персональных данных
+    personal_data_consent = path.join(
+        settings.STATIC_FOLDER,
+        settings.PERSONAL_DATA_CONSENT_FILENAME
+    )
+    with open(personal_data_consent, 'rb') as file:
+        await context.bot.send_document(
+            chat_id=update.effective_chat.id,
+            document=file
+        )
 
     return State.PERSONAL_DATA_PROCESSING
 
