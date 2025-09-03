@@ -16,6 +16,9 @@ from demo_data.models import (
     Decor,
     Berry
 )
+from utils import is_within_24_hours
+from datetime import date, time
+from tg_bot.settings import DELIVERY_WITHIN_24H_SURCHARGE
 
 
 # Начало заказа
@@ -248,30 +251,41 @@ def get_cart_details(cakes: list[Cake]):
 
 def get_confirm_create_order(
         cakes: list[Cake],
-        delivery_date,
-        delivery_time,
+        delivery_date: date,
+        delivery_time: time,
         promocode: Promocode,
-        comment: str
+        comment: str,
+        total_price: int,
+        urgent_delivery_price: int | None = None,
+        discount_price: int | None = None
 ):
     text = (
         'Подтвердите создание заказа\n'
-        f'Всего {len(cakes)} позиций\n'
+        f'Всего позиций: {len(cakes)}\n'
         'Список\n'
     )
 
+    for cake in cakes:
+        text += f'{cake.title} – {cake.get_price()} р.\n'
+
     if delivery_date:
-        text += f'Дата: {delivery_date}\n'
+        text += f'Дата: {delivery_date.strftime('%d-%m-%Y')}\n'
 
     if delivery_time:
-        text += f'Время: {delivery_time}\n'
+        text += f'Время: {delivery_time.strftime('%H:%M')}\n'
 
-    if promocode:
-        text += f'Использован промокод {promocode.title} размер скидки в %\n'
-        price = '{зачеркнутая старая цена} {цена с учетом промокода}'
+    if urgent_delivery_price:
+        text += 'Наценка за доставку в течение 24 часов\n'
+        text += f'<s>{total_price}</s> <b>{urgent_delivery_price}</b>\n'
+        total_price = urgent_delivery_price
+
+    if promocode and discount_price:
+        text += f'Использован промокод {promocode.title} размер скидки в {promocode.discount}%\n'
+        price = f'<s>{total_price}</s> <b>{discount_price}</b>\n'
     else:
-        price = '{цена}'
+        price = f'{total_price}'
 
-    text += f'Цена: {price}'
+    text += f'Цена: {price}\n'
 
     if comment:
         text += (

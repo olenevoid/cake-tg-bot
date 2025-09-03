@@ -13,9 +13,9 @@ from demo_data.demo_db import (
 )
 from tg_bot.callbacks import parse_callback_data_string
 import tg_bot.handlers.registration as registration
-import tg_bot.validators as validators
-from utils import get_available_dates, get_available_times
-from datetime import date
+from tg_bot.settings import DELIVERY_WITHIN_24H_SURCHARGE
+from utils import get_available_dates, get_available_times, is_within_24_hours
+from datetime import date, time
 
 
 async def show_cakes(update: Update, context: CallbackContext):
@@ -101,21 +101,36 @@ async def confirm_create_order(update: Update, context: CallbackContext):
 
     promocode_pk = context.user_data.get('promocode')
     comment = context.user_data.get('comment')
-    delivery_date = context.user_data.get('date')
-    delivery_time = context.user_data.get('time')
+    delivery_date = date.fromisoformat(context.user_data.get('date'))
+    delivery_time = time.fromisoformat(context.user_data.get('time'))
 
     if cart:
         cakes = [get_cake(cake_pk) for cake_pk in cart]
 
     if promocode_pk:
         promocode = get_promocode(promocode_pk)
+        
+    total_price = 0
+    urgent_delivery_price = None
+    discount_price = None
+    for cake in cakes:
+        total_price += cake.get_price()
+
+    if is_within_24_hours(delivery_date, delivery_time):
+        urgent_delivery_price = total_price * (1 + DELIVERY_WITHIN_24H_SURCHARGE / 100)
+
+    if promocode:
+        discount_price = total_price  * (1 - promocode.discount / 100)
 
     text = strings.get_confirm_create_order(
         cakes,
         delivery_date,
         delivery_time,
         promocode,
-        comment
+        comment,
+        total_price,
+        urgent_delivery_price,
+        discount_price
     )
 
     if context.user_data.get('new_message'):
