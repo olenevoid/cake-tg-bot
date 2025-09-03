@@ -180,8 +180,8 @@ async def add_sign(update: Update, context: CallbackContext):
 async def save_custom_cake(update: Update, context: CallbackContext):
     layers = context.user_data.get('layers')
     shape = db.get_shape(context.user_data.get('shape_pk'))
-    decor = db.get_decor(context.user_data.get('decor_pk'))
-    berry = db.get_berry(context.user_data.get('berry_pk'))
+    decor_pk = context.user_data.get('decor_pk')
+    berry_pk = context.user_data.get('berry_pk')
     topping = db.get_topping(context.user_data.get('topping_pk'))
     sign = context.user_data.get('sign')
 
@@ -193,8 +193,8 @@ async def save_custom_cake(update: Update, context: CallbackContext):
         shape.pk,
         layers,
         sign,
-        [decor.pk],
-        [berry.pk],
+        [decor_pk],
+        [berry_pk],
         True
     )
 
