@@ -178,7 +178,6 @@ def add_customer(
     }
 
     add_to_json(USERS, user)
-    return
 
 
 def delete_user_from_db(tg_id):
