@@ -92,6 +92,7 @@ def find_promocode(promocode_title: str) -> Promocode | None:
         return Promocode(
             promocode.get('pk'),
             promocode.get('title'),
+            promocode.get('discount'),
             promocode.get('is_active')
         )
     return None
@@ -209,6 +210,7 @@ def get_promocode(pk) -> Promocode:
     return Promocode(
         promocode.get('pk'),
         promocode.get('title'),
+        promocode.get('discount'),
         promocode.get('is_active')
     )
 
