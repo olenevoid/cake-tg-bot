@@ -273,8 +273,12 @@ def get_confirm_create_order(
         text += f'Время: {delivery_time.strftime('%H:%M')}\n'
 
     if urgent_delivery_price:
-        text += 'Наценка за доставку в течение 24 часов\n'
-        text += f'<s>{total_price}</s> <b>{urgent_delivery_price}</b>\n'
+        price_with_delivery = (
+            f'<s>{total_price}</s> <b>{urgent_delivery_price}</b>'
+        )
+        text += (
+            f'Наценка за доставку в течение 24 часов: {price_with_delivery}\n'
+        )
         total_price = urgent_delivery_price
 
     if promocode and discount_price:
