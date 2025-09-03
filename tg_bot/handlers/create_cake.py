@@ -51,7 +51,7 @@ async def select_layers(update: Update, context: CallbackContext):
     await update.callback_query.answer()
 
     await update.callback_query.edit_message_text(
-        strings.get_number_of_layers(),
+        strings.get_number_of_layers(LAYERS),
         reply_markup=keyboards.get_select_layers(LAYERS),
         parse_mode='HTML'
     )

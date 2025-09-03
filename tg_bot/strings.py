@@ -331,7 +331,7 @@ def get_number_of_layers(layers: dict):
         'Выберите количество слоев для вашего торта:\n\n'
     )
 
-    for number, price in layers:
+    for number, price in layers.items():
         text += f'Слоев: {number} цена: {price}\n'
 
     return text
