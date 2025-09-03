@@ -128,11 +128,19 @@ ORDER_CREATED = (
 CAKES_LIST = '🎂 <b>Наши торты</b>\n\nВыберите понравившийся торт:'
 
 
-INPUT_SIGN = 'Введите надпись'
+INPUT_SIGN = (
+    '<b>Добавление надписи</b>\n\n'
+    'Напишите текст, который должен быть на торте.\n'
+    'Или нажмите "Пропустить", если надпись не нужна.\n\n'
+    '<i>Надпись добавляет 500 руб. к стоимости торта</i>'
+)
 
 
-CAKE_CREATED = 'Торт создан и добавлен в корзину'
-
+CAKE_CREATED = (
+    '✅ <b>Торт создан!</b>\n\n'
+    'Ваш торт добавлен в корзину.\n'
+    'Вы можете продолжить покупки или перейти к оформлению заказа.'
+)
 
 def get_confirm_signup(full_name: str, phone: str, address: str):
     text = (
@@ -285,25 +293,32 @@ def get_custom_cake(
         topping,
         sign
 ):
-    text = 'Тут что-то будет\n'
+    text = (
+        '<b>Ваш торт</b>\n\n'
+        'Состав вашего торта:\n\n'
+    )
 
     if layers:
-        text += f'Количество слоев: {layers} цена: {layers_price}\n'
+        text += f'Количество слоев: {layers} цена: {layers_price} руб.\n'
 
     if shape:
-        text += f'Форма: {shape.title} цена: {shape.price}\n'
+        text += f'Форма: {shape.title} цена: {shape.price} руб.\n'
 
     if decor:
-        text += f'Декор: {decor.title} цена: \n'
+        decor_names = ', '.join([d.title for d in decor])
+        decor_price = sum(d.price for d in decor)
+        text += f'Декор: {decor_names} цена: {decor_price} руб.\n'
 
     if berry:
-        text += f'Ягоды: {berry.title} цена: \n'
+        berry_names = ', '.join([b.title for b in berry])
+        berry_price = sum(b.price for b in berry)
+        text += f'• <b>Ягоды:</b> {berry_names} цена: {berry_price} руб.\n'
 
     if topping:
-        text += f'Топпинг: {topping.title} цена: \n'
+        text += f'Топпинг: {topping.title} цена: {topping.price} руб.\n'
 
     if sign:
-        text += f'Надпись: {sign}'
+        text += f'Надпись: {sign} цена: 500 руб.\n'
 
     text += 'Добавить торт в корзину?'
 
@@ -311,7 +326,10 @@ def get_custom_cake(
 
 
 def get_number_of_layers(layers: dict):
-    text = 'Количество коржей:\n'
+    text = (
+        '<b>Выбор количества коржей</b>\n\n'
+        'Выберите количество слоев для вашего торта:\n\n'
+    )
 
     for number, price in layers:
         text += f'Слоев: {number} цена: {price}\n'
@@ -320,7 +338,10 @@ def get_number_of_layers(layers: dict):
 
 
 def get_shapes(shapes: list[Shape]):
-    text = 'Формы\n'
+    text = (
+        '<b>Выбор формы торта</b>\n\n'
+        'Выберите форму для вашего торта:\n\n'
+    )
 
     for shape in shapes:
         text += f'{shape.title} {shape.price}\n'
@@ -329,7 +350,10 @@ def get_shapes(shapes: list[Shape]):
 
 
 def get_toppings(toppings: list[Topping]):
-    text = 'Топпинги\n'
+    text = (
+        '<b>Выбор топпинга</b>\n\n'
+        'Выберите топпинг для вашего торта:\n\n'
+    )
 
     for topping in toppings:
         text += f'{topping.title} {topping.price}\n'
@@ -338,7 +362,10 @@ def get_toppings(toppings: list[Topping]):
 
 
 def get_decor(decors: list[Decor]):
-    text = 'Декор\n'
+    text = (
+        '<b>Выбор декора</b>\n\n'
+        'Выберите декор для вашего торта:\n\n'
+    )
 
     for decor in decors:
         text += f'{decor.title} {decor.price}\n'
@@ -347,7 +374,10 @@ def get_decor(decors: list[Decor]):
 
 
 def get_berries(berries: list[Berry]):
-    text = 'Ягода\n'
+    text = (
+        '<b>Выбор ягод</b>\n\n'
+        'Выберите ягоды для вашего торта:\n\n'
+    )
 
     for berry in berries:
         text += f'{berry.title} {berry.price}\n'
