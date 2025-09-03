@@ -16,7 +16,8 @@ def get_main_menu(user: User):
         buttons.append(static_buttons.SIGNUP)
 
     if user and user.role.title == "customer":
-        buttons.append(static_buttons.MY_ORDERS)
+        # buttons.append(static_buttons.MY_ORDERS)
+        pass
 
     if user and user.role.title == "admin":
         buttons.append(static_buttons.ALL_ORDERS)
