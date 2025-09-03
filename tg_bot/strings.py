@@ -16,9 +16,7 @@ from demo_data.models import (
     Decor,
     Berry
 )
-from utils import is_within_24_hours
 from datetime import date, time
-from tg_bot.settings import DELIVERY_WITHIN_24H_SURCHARGE
 
 
 # Начало заказа
