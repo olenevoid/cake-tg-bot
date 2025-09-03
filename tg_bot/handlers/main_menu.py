@@ -3,19 +3,14 @@ import tg_bot.keyboards as keyboards
 from telegram.ext import CallbackContext
 import tg_bot.strings as strings
 import tg_bot.settings as settings
-from demo_data.demo_db import (
-    _old_get_toppings,
-    _old_get_berries,
-    _old_get_decor,
-    find_user,
-)
+import demo_data.demo_db as db
 from tg_bot.handlers.states import State
 
 
 async def start(update: Update, context: CallbackContext):
     await update.message.delete()
     tg_id = update.effective_chat.id
-    user = find_user(tg_id)
+    user = db.find_user(tg_id)
 
     await update.message.reply_text(
         strings.get_main_menu(user),
@@ -28,7 +23,7 @@ async def start(update: Update, context: CallbackContext):
 async def show_main_menu(update: Update, context: CallbackContext):
     await update.callback_query.answer()
     tg_id = update.effective_chat.id
-    user = find_user(tg_id)
+    user = db.find_user(tg_id)
     text = strings.get_main_menu(user)
 
     await update.callback_query.edit_message_text(
@@ -49,7 +44,7 @@ async def order_cake(update: Update, context: CallbackContext):
         reply_markup=keyboards.get_order_cake(),
         parse_mode='HTML'
     )
-    
+
     return State.ORDER_CAKE
 
 
@@ -67,13 +62,18 @@ async def my_orders(update: Update, context: CallbackContext):
 
 async def show_pricelist(update: Update, context: CallbackContext):
     await update.callback_query.answer()
-    toppings = _old_get_toppings()
-    decor = _old_get_decor()
-    berries = _old_get_berries()
+    toppings = db.get_toppings()
+    decor = db.get_decors()
+    berries = db.get_berries()
+    shapes = db.get_shapes()
 
-    text = strings.show_ingredients('Топпинги', toppings)
-    text += strings.show_ingredients('Декор', decor)
-    text += strings.show_ingredients('Ягоды', berries)
+    text = strings.show_pricelist(
+        settings.LAYERS,
+        shapes,
+        toppings,
+        decor,
+        berries
+    )
 
     await update.callback_query.edit_message_text(
         text,

@@ -391,3 +391,28 @@ def get_berries(berries: list[Berry]):
         text += f'{berry.title} {berry.price}\n'
 
     return text
+
+
+def show_pricelist(
+        layers: dict,
+        shapes: list[Shape],
+        toppings: list[Topping],
+        decor: list[Decor],
+        berries: list[Berry]
+):
+    text = '<b>Расценки при покупке торта на заказ:</b>\n\n'
+
+    text += '<b>Количество коржей:</b> \n\n'
+    for number, price in layers.items():
+        text += f'{number} — <b>{price} руб.</b>\n'
+
+    text += '\n'
+    text += show_ingredients('Формы', shapes)
+    text += '\n'
+    text += show_ingredients('Топпинги', toppings)
+    text += '\n'
+    text += show_ingredients('Декор', decor)
+    text += '\n'
+    text += show_ingredients('Ягоды', berries)
+
+    return text
