@@ -159,12 +159,11 @@ def add_order(
     add_to_json(ORDERS, order)
 
 
-#TODO: Удалить значения по умолчанию ближе к концу разработки
 def add_customer(
     tg_id: int,
-    full_name: str = 'Иван Иванов',
-    address: str = 'ул. Ленина 10',
-    phone: str = '89001234567'
+    full_name: str,
+    address: str,
+    phone: str
 ):
     customer_role_pk = 1
 
