@@ -53,7 +53,8 @@ class Decor:
 class Promocode:
     pk: int
     title: str
-    is_active: bool
+    discount: int = 10
+    is_active: bool = True
 
 
 @dataclass
