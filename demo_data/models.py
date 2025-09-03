@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from datetime import date, time
 from typing import Optional
 from .utils import calculate_order_total_price
+from tg_bot.settings import LAYERS
 
 
 @dataclass
@@ -76,30 +77,12 @@ class Cake:
         if self.price is not None:
             return self.price
 
-        # Иначе вычисляем цену для кастомного торта
-        # Проверяем, что все необходимые поля заданы
-        if self.topping is None:
-            raise ValueError("Topping is required for custom cake")
-        if self.shape is None:
-            raise ValueError("Shape is required for custom cake")
-        if self.number_of_layers is None:
-            raise ValueError("Number of layers is required for custom cake")
-        if self.sign is None:
-            raise ValueError("Sign is required for custom cake")
-
         # Цена за количество уровней из настроек
-        from tg_bot import settings
-
-        level_prices = {
-            1: settings.LEVEL_1_PRICE,
-            2: settings.LEVEL_2_PRICE,
-            3: settings.LEVEL_3_PRICE,
-        }
-        price = level_prices.get(self.number_of_layers)
+        price = LAYERS.get(self.number_of_layers)
 
         if price is None:
             # Если количество уровней не 1,2,3, используем цену за 1 уровень
-            price = settings.LEVEL_1_PRICE
+            price = LAYERS.get(1)
 
         # Цена формы
         price += self.shape.price
@@ -108,15 +91,17 @@ class Cake:
         price += self.topping.price
 
         # Цена ягод (если есть)
-        for berry in self.berries:
-            price += berry.price
+        if self.berries:
+            for berry in self.berries:
+                price += berry.price
 
         # Цена декора (если есть)
-        for decor_item in self.decor:
-            price += decor_item.price
+        if self.decor:
+            for decor_item in self.decor:
+                price += decor_item.price
 
         # Цена надписи (если есть текст)
-        if self.sign.strip():
+        if self.sign and self.sign.strip():
             price += 500
 
         return price
