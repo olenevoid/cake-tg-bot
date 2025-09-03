@@ -205,19 +205,17 @@ def get_my_orders(orders: list[Order]):
 # Показ ингредиентов
 def show_ingredients(category: str, items: list):
     text = f'<b>{category}:</b>\n\n'
-    
+
     if not items:
         text += 'Нет доступных вариантов.\n'
         return text
-    
+
     for item in items:
         text += f'• {item.title}'
         if hasattr(item, 'price') and item.price:
             text += f' — <b>{item.price} руб.</b>'
         text += '\n'
-    
-    text += '\nВыберите вариант или несколько (если возможно):'
-    
+
     return text
 
 
