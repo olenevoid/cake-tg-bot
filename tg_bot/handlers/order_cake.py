@@ -167,16 +167,14 @@ async def validate_promocode(update: Update, context: CallbackContext):
     promocode = find_promocode(promocode_text)
     if promocode and promocode.is_active:
         context.user_data['promocode'] = promocode.pk
-        context.user_data['new_message'] = True
-        return await confirm_create_order(update, context)
     else:
         await context.bot.send_message(
                 chat_id=update.effective_chat.id,
                 text=strings.PROMO_DOES_NOT_EXIST,
                 parse_mode='HTML',
         )
-
-        return State.INPUT_PROMOCODE
+    context.user_data['new_message'] = True
+    return await confirm_create_order(update, context)
 
 
 async def input_comment(update: Update, context: CallbackContext):
