@@ -299,26 +299,22 @@ def get_custom_cake(
     )
 
     if layers:
-        text += f'Количество слоев: {layers} цена: {layers_price} руб.\n'
+        text += f'<b>Количество слоев:</b> {layers} цена: {layers_price} руб.\n'
 
     if shape:
-        text += f'Форма: {shape.title} цена: {shape.price} руб.\n'
+        text += f'<b>Форма:</b> {shape.title} цена: {shape.price} руб.\n'
 
     if decor:
-        decor_names = ', '.join([d.title for d in decor])
-        decor_price = sum(d.price for d in decor)
-        text += f'Декор: {decor_names} цена: {decor_price} руб.\n'
+        text += f'<b>Декор:</b> {decor.title} цена: {decor.price} руб.\n'
 
     if berry:
-        berry_names = ', '.join([b.title for b in berry])
-        berry_price = sum(b.price for b in berry)
-        text += f'• <b>Ягоды:</b> {berry_names} цена: {berry_price} руб.\n'
+        text += f'<b>Ягоды:</b> {berry.title} цена: {berry.price} руб.\n'
 
     if topping:
-        text += f'Топпинг: {topping.title} цена: {topping.price} руб.\n'
+        text += f'<b>Топпинг:</b> {topping.title} цена: {topping.price} руб.\n'
 
     if sign:
-        text += f'Надпись: {sign} цена: 500 руб.\n'
+        text += f'<b>Надпись:</b> {sign} цена: 500 руб.\n'
 
     text += 'Добавить торт в корзину?'
 
