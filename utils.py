@@ -75,3 +75,12 @@ def get_available_times(delivery_date: date):
         current_time += timedelta(minutes=30)
     
     return times
+
+
+def is_within_24_hours(given_date, given_time):
+    given_datetime = datetime.combine(given_date, given_time)
+    current_datetime = datetime.now()
+
+    time_difference = abs(current_datetime - given_datetime)
+
+    return time_difference <= timedelta(hours=24)
