@@ -264,8 +264,8 @@ def get_cake_details(cake: Cake):
         f'<b>Цена:</b> {cake.get_price()} руб.\n\n'
     )
 
-    if cake.image:
-        text += f'<a href="{cake.image}">🖼 Посмотреть фото</a>\n\n'
+    if cake.image_path:
+        text += f'<a href="{cake.image_path}">🖼 Посмотреть фото</a>\n\n'
     
     text += 'Добавить в корзину?'
 

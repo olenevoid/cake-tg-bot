@@ -64,7 +64,7 @@ class Cake:
     pk: int
     title: str
     price: Optional[int] = None  # Новое поле: цена для типовых тортов
-    image: Optional[str] = None  # Новое поле: ссылка на изображение
+    image_path: Optional[str] = None  # Новое поле: ссылка на изображение
     topping: Optional[Topping] = None
     shape: Optional[Shape] = None
     number_of_layers: Optional[int] = None
