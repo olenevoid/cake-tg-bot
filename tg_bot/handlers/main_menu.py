@@ -50,7 +50,7 @@ async def order_cake(update: Update, context: CallbackContext):
 
 async def my_orders(update: Update, context: CallbackContext):
     await update.callback_query.answer()
-    orders = []
+    orders = db.get_orders()
     text = strings.get_my_orders(orders)
 
     await update.callback_query.edit_message_text(

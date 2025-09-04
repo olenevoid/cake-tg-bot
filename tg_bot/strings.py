@@ -188,7 +188,7 @@ def get_my_orders(orders: list[Order]):
 
     for i, order in enumerate(orders, 1):
         text += f'<b>Заказ #{i}</b>\n'
-        text += f'• Торт: {order.cake.title}\n'
+        text += f'• Тортов: {len(order.cakes)}\n'
         text += f'• Дата доставки: {order.delivery_date.strftime("%d.%m.%Y")}\n'
         text += f'• Время: {order.delivery_time.strftime("%H:%M")}\n'
         text += f'• Адрес: {order.address}\n'
