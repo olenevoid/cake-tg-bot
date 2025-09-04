@@ -27,7 +27,7 @@ def create_test_json_files():
                 "sign": "С днем рождения!",
                 "decor": [2, 5],
                 "berries": [2, 4],
-                "custom": False
+                "custom": True
             },
             "2": {
                 "pk": 2,
@@ -41,7 +41,7 @@ def create_test_json_files():
                 "sign": "",
                 "decor": [3],
                 "berries": [],
-                "custom": False
+                "custom": True
             },
             "3": {
                 "pk": 3,
