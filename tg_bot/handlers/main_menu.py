@@ -5,6 +5,7 @@ import tg_bot.strings as strings
 import tg_bot.settings as settings
 import demo_data.demo_db as db
 from tg_bot.handlers.states import State
+from tg_bot.callbacks import parse_callback_data_string
 
 
 async def start(update: Update, context: CallbackContext):
@@ -124,3 +125,57 @@ async def change_role(update: Update, context: CallbackContext):
     )
 
     return await show_main_menu(update, context)
+
+
+async def show_users(update: Update, context: CallbackContext):
+    tg_id = update.effective_chat.id
+    this_user = db.find_user(tg_id)
+    if not this_user.role.title == 'admin':
+        return await show_main_menu(update, context)
+
+    users = db.get_users()
+    text = 'Список пользователей: \n\n'
+
+    for user in users:
+        text += (
+            f'Имя пользователя: {user.full_name}\n'
+            f'Телефон: {user.phone}\n\n'
+        )
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_show_users(users),
+        parse_mode='HTML'
+    )
+
+    return State.MAIN_MENU
+
+
+async def show_user(update: Update, context: CallbackContext):
+    tg_id = update.effective_chat.id
+    this_user = db.find_user(tg_id)
+    if not this_user.role.title == 'admin':
+        return await show_main_menu(update, context)
+
+    await update.callback_query.answer()
+    params = parse_callback_data_string(update.callback_query.data).params
+    user = db.get_user(params.get('user_pk'))
+
+    orders = db.get_orders()
+    user_orders = [order for order in orders if order.customer == user]
+
+    text = (
+        f'Имя пользователя: {user.full_name}\n'
+        f'Роль: {user.role.title}\n'
+        f'Телефон: {user.phone}\n'
+        f'Адрес: {user.address}\n'
+        f'Количество заказов: {len(user_orders)}\n'
+    )
+
+    await update.callback_query.edit_message_text(
+        text,
+        reply_markup=keyboards.get_back_to_menu(),
+        parse_mode='HTML'
+    )
+
+    return State.MAIN_MENU

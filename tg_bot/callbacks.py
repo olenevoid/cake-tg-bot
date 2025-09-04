@@ -44,6 +44,7 @@ class Callback(StrEnum):
     MAKE_ADMIN = auto()
     MAKE_CUSTOMER = auto()
     SHOW_USERS = auto()
+    SHOW_USER = auto()
 
 
 # Класс для создания строки коллбэков с параметрами 

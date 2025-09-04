@@ -275,6 +275,14 @@ def get_main_conversation_handler():
                     registration.start_registration,
                     get_pattern(Callback.SIGNUP)
                 ),
+                CallbackQueryHandler(
+                    main_menu.show_users,
+                    Callback.SHOW_USERS
+                ),
+                CallbackQueryHandler(
+                    main_menu.show_user,
+                    get_pattern(Callback.SHOW_USER)
+                )
             ],
             State.REGISTRATION: [registration_level],
             State.ORDER_CAKE: [order_cake_level, create_cake_level]

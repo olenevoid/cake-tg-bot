@@ -200,6 +200,11 @@ def get_user(pk) -> User:
     return parse_user(user)
 
 
+def get_users() -> list[User]:
+    users = load_from_json(USERS)
+    return [parse_user(user) for user in users.values()]
+
+
 def get_promocode(pk) -> Promocode:
     promocode = find_value_in_dict(pk, PROMOCODES)
     if not promocode:

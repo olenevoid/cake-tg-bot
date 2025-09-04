@@ -315,5 +315,18 @@ def get_cake_created_menu():
     return InlineKeyboardMarkup(buttons)
 
 
-def get_my_orders():
-    pass
+def get_show_users(users: list[User]):
+    buttons = []
+    for user in users:
+        button = CallbackButton(
+            user.full_name,
+            Callback.SHOW_USER,
+            user_pk=user.pk
+        )
+
+        buttons.append(button)
+
+    buttons = split_to_sublists(buttons, 2)
+
+    buttons.append([static_buttons.MAIN_MENU])
+    return InlineKeyboardMarkup(buttons)
