@@ -18,30 +18,36 @@ def create_test_json_files():
             "1": {
                 "pk": 1,
                 "title": "Ягодный торт Марии",
+                "price": 2500,
+                "image": "static/images/berry_cake.jpg",
                 "user": 2,
                 "topping": 5,
                 "shape": 1,
                 "number_of_layers": 2,
                 "sign": "С днем рождения!",
                 "decor": [2, 5],
-                "berries": [2, 4]
+                "berries": [2, 4],
+                "custom": False
             },
             "2": {
                 "pk": 2,
                 "title": "Шоколадный торт Ивана",
+                "price": 2200,
+                "image": "static/images/chocolate_cake.jpg",
                 "user": 1,
                 "topping": 7,
                 "shape": 2,
                 "number_of_layers": 1,
                 "sign": "",
                 "decor": [3],
-                "berries": []
+                "berries": [],
+                "custom": False
             },
             "3": {
                 "pk": 3,
                 "title": "Красный бархат",
                 "price": 2000,
-                "image": "https://....jpg",  # Замените на реальную ссылку
+                "image": "static/images/red_velvet.jpg",
                 "user": None,
                 "topping": None,
                 "shape": None,
@@ -49,6 +55,49 @@ def create_test_json_files():
                 "sign": None,
                 "decor": [],
                 "berries": [],
+                "custom": False
+            },
+            "4": {
+                "pk": 4,
+                "title": "Медовик",
+                "price": 2300,
+                "image": "static/images/medovik.jpg",
+                "user": None,
+                "topping": None,
+                "shape": None,
+                "number_of_layers": None,
+                "sign": None,
+                "decor": [],
+                "berries": [],
+                "custom": False
+            },
+            "5": {
+                "pk": 5,
+                "title": "Чизкейк Нью-Йорк",
+                "price": 2700,
+                "image": "static/images/cheesecake.jpg",
+                "user": None,
+                "topping": None,
+                "shape": None,
+                "number_of_layers": None,
+                "sign": None,
+                "decor": [],
+                "berries": [],
+                "custom": False
+            },
+            "6": {
+                "pk": 6,
+                "title": "Фруктовый рай",
+                "price": 2600,
+                "image": "static/images/fruit_cake.jpg",
+                "user": None,
+                "topping": None,
+                "shape": None,
+                "number_of_layers": None,
+                "sign": None,
+                "decor": [],
+                "berries": [],
+                "custom": False
             }
         },
         "decors.json": {
@@ -82,9 +131,9 @@ def create_test_json_files():
             }
         },
         "promocodes.json": {
-            "1": {"pk": 1, "title": "ПЕРВЫЙ ЗАКАЗ", "is_active": True},
-            "2": {"pk": 2, "title": "ДЕНЬ РОЖДЕНИЯ", "is_active": True},
-            "3": {"pk": 3, "title": "ИЮНЬ2025", "is_active": False}
+            "1": {"pk": 1, "title": "ПЕРВЫЙЗАКАЗ", "discount": 10, "is_active": True},
+            "2": {"pk": 2, "title": "ДЕНЬРОЖДЕНИЯ", "discount": 15, "is_active": True},
+            "3": {"pk": 3, "title": "ИЮНЬ2025", "discount": 5, "is_active": False}
         },
         "roles.json": {
             "1": {"pk": 1, "title": "customer"},
