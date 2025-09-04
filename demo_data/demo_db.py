@@ -159,19 +159,18 @@ def add_order(
     add_to_json(ORDERS, order)
 
 
-def add_customer(
+def add_user(
     tg_id: int,
     full_name: str,
     address: str,
-    phone: str
+    phone: str,
+    role_pk: int = 1
 ):
-    customer_role_pk = 1
-
     user = {
         'pk': None,
         'tg_id': tg_id,
         'full_name': full_name,
-        'role': customer_role_pk,
+        'role': role_pk,
         'address': address,
         'phone': phone
     }

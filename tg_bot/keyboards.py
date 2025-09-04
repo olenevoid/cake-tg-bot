@@ -17,9 +17,11 @@ def get_main_menu(user: User):
 
     if user and user.role.title == "customer":
         buttons.append(static_buttons.MY_ORDERS)
+        buttons.append(static_buttons.MAKE_ADMIN)
 
     if user and user.role.title == "admin":
         buttons.append(static_buttons.ALL_ORDERS)
+        buttons.append(static_buttons.MAKE_CUSTOMER)
 
     if user:
         buttons.append(static_buttons.DELETE_USER)

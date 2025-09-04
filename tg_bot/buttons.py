@@ -31,3 +31,11 @@ DELETE_USER = CallbackButton(
     'Удалить пользователя (для тестов)',
     Callback.DELETE_USER
 )
+MAKE_ADMIN = CallbackButton(
+    'Стать админом (для тестов)',
+    Callback.MAKE_ADMIN
+)
+MAKE_CUSTOMER = CallbackButton(
+    'Стать клиентом (для тестов)',
+    Callback.MAKE_CUSTOMER
+)

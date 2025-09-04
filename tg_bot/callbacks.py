@@ -41,6 +41,8 @@ class Callback(StrEnum):
     REDO = auto()
     DOWNLOAD = auto()
     DELETE_USER = auto()
+    MAKE_ADMIN = auto()
+    MAKE_CUSTOMER = auto()
 
 
 # Класс для создания строки коллбэков с параметрами 

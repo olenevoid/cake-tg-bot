@@ -4,7 +4,7 @@ from telegram.ext import CallbackContext
 import tg_bot.strings as strings
 import tg_bot.settings as settings
 import tg_bot.validators as validators
-from demo_data.demo_db import add_customer, delete_user_from_db
+from demo_data.demo_db import add_user, delete_user_from_db
 from tg_bot.handlers.states import State
 import tg_bot.handlers.main_menu as main_menu
 from os import path
@@ -147,7 +147,7 @@ async def signup_customer(update: Update, context: CallbackContext):
     name = context.user_data.get('full_name')
     phone = context.user_data.get('phone')
     address = context.user_data.get('address')
-    add_customer(tg_id, name, address, phone)
+    add_user(tg_id, name, address, phone)
     text = strings.get_signup_complete(name)
 
     cart = context.user_data.get('cart')

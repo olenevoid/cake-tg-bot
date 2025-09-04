@@ -290,5 +290,13 @@ def get_main_conversation_handler():
                 registration.delete_user,
                 get_pattern(Callback.DELETE_USER)
             ),
+            CallbackQueryHandler(
+                main_menu.change_role,
+                Callback.MAKE_CUSTOMER
+            ),
+            CallbackQueryHandler(
+                main_menu.change_role,
+                Callback.MAKE_ADMIN
+            )
         ]
     )

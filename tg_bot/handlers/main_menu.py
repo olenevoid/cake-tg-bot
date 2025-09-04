@@ -103,3 +103,24 @@ async def show_pricelist(update: Update, context: CallbackContext):
         reply_markup=keyboards.get_back_to_menu(),
         parse_mode='HTML'
     )
+
+
+async def change_role(update: Update, context: CallbackContext):
+    tg_id = update.effective_chat.id
+    user = db.find_user(tg_id)
+
+    if user.role.title == 'customer':
+        role_pk = 2
+    if user.role.title == 'admin':
+        role_pk = 1
+
+    db.delete_user_from_db(tg_id)
+    db.add_user(
+        user.tg_id,
+        user.full_name,
+        user.address,
+        user.phone,
+        role_pk
+    )
+
+    return await show_main_menu(update, context)
