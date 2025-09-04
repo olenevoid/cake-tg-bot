@@ -225,7 +225,7 @@ def get_all_orders(orders: list[Order]):
         text += f'• Время: {order.delivery_time.strftime("%H:%M")}\n'
         text += f'• Адрес: {order.address}\n'
         text += f'• Телефон: {order.customer.phone}\n'
-        text += f'• Комментарий: {order.comment}'
+        text += f'• Комментарий: {order.comment}\n'
         text += f'• Статус: В обработке\n\n'
     
     text += 'Выберите заказ для просмотра деталей или создания похожего.'
