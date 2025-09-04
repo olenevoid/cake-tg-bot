@@ -2,7 +2,7 @@
 from dataclasses import dataclass, field
 from datetime import date, time
 from typing import Optional
-from .utils import calculate_order_total_price
+from demo_data.utils import calculate_order_total_price
 from tg_bot.settings import LAYERS
 
 
@@ -119,5 +119,4 @@ class Order:
     comment: Optional[str] = None
 
     def get_total_price(self):
-        from .utils import calculate_order_total_price
         return calculate_order_total_price(self)
