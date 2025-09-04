@@ -252,7 +252,7 @@ def show_ingredients(category: str, items: list):
 def get_show_cakes(cart: list[int]):
     text = '🎂 <b>Наши торты</b>\n\n'
     if cart:
-        text += f'🛒 Тортов в корзине: {len(cart)}'
+        text += f'🛒 Тортов в корзине: {len(cart)}\n'
     text += 'Выберите понравившийся торт:'
 
     return text
