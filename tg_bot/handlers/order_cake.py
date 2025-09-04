@@ -278,7 +278,7 @@ async def create_order(update: Update, context: CallbackContext):
     delivery_date = context.user_data.get('date')
     delivery_time = context.user_data.get('time')
     promocode_pk = context.user_data.get('promocode')
-    promocode = find_promocode(promocode_pk)
+    promocode = get_promocode(promocode_pk)
     comment = context.user_data.get('comment')
 
     cakes = context.user_data.get('cart')

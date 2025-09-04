@@ -87,7 +87,7 @@ def find_user(tg_id: int) -> models.User | None:
 
 
 def find_promocode(promocode_title: str) -> Promocode | None:
-    promocode = find_by_field(PROMOCODES, 'title', promocode_title)
+    promocode = find_by_field(PROMOCODES, 'title', promocode_title.upper())
     if promocode:
         return Promocode(
             promocode.get('pk'),
