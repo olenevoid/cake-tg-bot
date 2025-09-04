@@ -2,8 +2,9 @@
 from dataclasses import dataclass, field
 from datetime import date, time
 from typing import Optional
-from demo_data.utils import calculate_order_total_price
 from tg_bot.settings import LAYERS
+from utils import is_within_24_hours
+from tg_bot.settings import DELIVERY_WITHIN_24H_SURCHARGE
 
 
 @dataclass
@@ -120,3 +121,23 @@ class Order:
 
     def get_total_price(self):
         return calculate_order_total_price(self)
+
+
+def calculate_order_total_price(order: Order) -> int:
+    """Рассчитывает общую стоимость заказа с учетом:
+    - стоимости всех тортов
+    - срочной доставки (если менее 24 часов)
+    - примененных промокодов
+    """
+    # Суммируем стоимость всех тортов в заказе
+    total = sum(cake.get_price() for cake in order.cakes)
+
+    # Проверяем, является ли доставка срочной
+    if is_within_24_hours(order.delivery_date, order.delivery_time):
+        total = total * (1 + DELIVERY_WITHIN_24H_SURCHARGE / 100)
+
+    # Применяем скидку по промокоду
+    if order.promocode and order.promocode.is_active:
+        total = total  * (1 - order.promocode.discount / 100)
+
+    return total
