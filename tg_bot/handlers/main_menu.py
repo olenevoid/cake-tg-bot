@@ -134,6 +134,7 @@ async def show_users(update: Update, context: CallbackContext):
         return await show_main_menu(update, context)
 
     users = db.get_users()
+    ### в strings
     text = 'Список пользователей: \n\n'
 
     for user in users:
@@ -141,6 +142,7 @@ async def show_users(update: Update, context: CallbackContext):
             f'Имя пользователя: {user.full_name}\n'
             f'Телефон: {user.phone}\n\n'
         )
+    ###
 
     await update.callback_query.edit_message_text(
         text,
@@ -163,7 +165,7 @@ async def show_user(update: Update, context: CallbackContext):
 
     orders = db.get_orders()
     user_orders = [order for order in orders if order.customer == user]
-
+    ### в strings
     text = (
         f'Имя пользователя: {user.full_name}\n'
         f'Роль: {user.role.title}\n'
@@ -171,6 +173,7 @@ async def show_user(update: Update, context: CallbackContext):
         f'Адрес: {user.address}\n'
         f'Количество заказов: {len(user_orders)}\n'
     )
+    ###
 
     await update.callback_query.edit_message_text(
         text,
