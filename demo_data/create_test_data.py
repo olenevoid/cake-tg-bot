@@ -98,6 +98,34 @@ def create_test_json_files():
                 "decor": [],
                 "berries": [],
                 "custom": False
+            },
+            "7": {
+                "pk": 7,
+                "title": "Шоколадная мечта",
+                "price": 2800,
+                "image": "static/images/dream.jpg",
+                "user": None,
+                "topping": 7,
+                "shape": 1,
+                "number_of_layers": 2,
+                "sign": None,
+                "decor": [3, 6],
+                "berries": [],
+                "custom": False
+            },
+            "8": {
+                "pk": 8,
+                "title": "Ванильное наслаждение",
+                "price": 2400,
+                "image": "static/images/vanilla_bliss.jpg",
+                "user": None,
+                "topping": 2,
+                "shape": 2,
+                "number_of_layers": 1,
+                "sign": None,
+                "decor": [5],
+                "berries": [1, 3],
+                "custom": False
             }
         },
         "decors.json": {
