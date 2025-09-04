@@ -276,7 +276,7 @@ async def create_order(update: Update, context: CallbackContext):
     tg_id = update.effective_chat.id
     user = find_user(tg_id)
     delivery_date = context.user_data.get('date')
-    delivery_time = context. user_data.get('time')
+    delivery_time = context.user_data.get('time')
     promocode_pk = context.user_data.get('promocode')
     promocode = find_promocode(promocode_pk)
     comment = context.user_data.get('comment')

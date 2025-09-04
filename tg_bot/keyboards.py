@@ -194,7 +194,7 @@ def get_select_time_menu(times: list[time]):
         button = CallbackButton(
             f'{time_.strftime('%H:%M')}',
             Callback.ADD_TIME,
-            time=time_.isoformat()
+            time=time_.strftime('%H:%M')
         )
 
         buttons.append(button)
