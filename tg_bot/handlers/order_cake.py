@@ -19,29 +19,56 @@ from datetime import date, time
 
 
 async def show_cakes(update: Update, context: CallbackContext):
-    await update.callback_query.answer()
     cakes = get_cakes()
     cart = context.user_data.get('cart')
 
-    await update.callback_query.edit_message_text(
-        strings.get_show_cakes(cart),
-        reply_markup=keyboards.get_select_cake(cakes),
-        parse_mode='HTML'
-    )
+    text = strings.get_show_cakes(cart)
+    keyboard = keyboards.get_select_cake(cakes)
+
+    if context.user_data.get('new_message'):
+        context.user_data['new_message'] = False
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            reply_markup=keyboard,
+            parse_mode='HTML'
+        )
+    else:
+        await update.callback_query.edit_message_text(
+            text,
+            reply_markup=keyboard,
+            parse_mode='HTML'
+        )
     return State.SHOW_CAKES
 
 
 async def show_cake(update: Update, context: CallbackContext):
     await update.callback_query.answer()
+    chat_id = update.effective_chat.id
     params = parse_callback_data_string(update.callback_query.data).params
     cake_pk = params.get('cake_pk')
     cake = get_cake(cake_pk)
 
-    await update.callback_query.edit_message_text(
-        strings.get_cake_details(cake),
-        reply_markup=keyboards.get_cake_menu(cake),
-        parse_mode='HTML'
-    )
+    text = strings.get_cake_details(cake)
+    context.user_data['new_message'] = True
+
+    if cake.image_path:
+
+        await context.bot.send_photo(
+                chat_id=chat_id,
+                photo=open(cake.image_path, 'rb').read(),
+                caption=text,
+                parse_mode='HTML',
+                reply_markup=keyboards.get_cake_menu(cake)
+        )
+    else:
+        await context.bot.send_message(
+                chat_id=chat_id,
+                text=text,
+                parse_mode='HTML',
+                reply_markup=keyboards.get_cake_menu(cake)
+        )
+
     return State.SHOW_CAKE
 
 

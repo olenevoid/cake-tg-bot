@@ -25,12 +25,23 @@ async def show_main_menu(update: Update, context: CallbackContext):
     tg_id = update.effective_chat.id
     user = db.find_user(tg_id)
     text = strings.get_main_menu(user)
+    keyboard = keyboards.get_main_menu(user)
 
-    await update.callback_query.edit_message_text(
-        text,
-        reply_markup=keyboards.get_main_menu(user),
-        parse_mode='HTML'
-    )
+    if context.user_data.get('new_message'):
+        context.user_data['new_message'] = False
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            reply_markup=keyboard,
+            parse_mode='HTML'
+        )
+    else:
+        await update.callback_query.edit_message_text(
+            text,
+            reply_markup=keyboard,
+            parse_mode='HTML'
+        )
+
     return State.MAIN_MENU
 
 
