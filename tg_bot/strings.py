@@ -206,6 +206,32 @@ def get_my_orders(orders: list[Order]):
     return text
 
 
+def get_all_orders(orders: list[Order]):
+    if not orders:
+        return (
+            '📦 <b>Список  заказов</b>\n\n'
+            'У вас пока нет заказов.\n\n'
+            'Хотите создать свой первый торт?'
+        )
+    
+    text = '📦 <b>Список заказов</b>\n\n'
+    text += f'Всего заказов: {len(orders)}\n\n'
+
+    for i, order in enumerate(orders, 1):
+        text += f'<b>Заказ #{i}</b>\n'
+        text += f'• Пользователь: {order.customer.full_name}\n'
+        text += f'• Тортов: {len(order.cakes)}\n'
+        text += f'• Дата доставки: {order.delivery_date.strftime("%d.%m.%Y")}\n'
+        text += f'• Время: {order.delivery_time.strftime("%H:%M")}\n'
+        text += f'• Адрес: {order.address}\n'
+        text += f'• Телефон: {order.customer.phone}\n'
+        text += f'• Статус: В обработке\n\n'
+    
+    text += 'Выберите заказ для просмотра деталей или создания похожего.'
+    
+    return text
+
+
 # Показ ингредиентов
 def show_ingredients(category: str, items: list):
     text = f'<b>{category}:</b>\n\n'

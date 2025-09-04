@@ -50,8 +50,20 @@ async def order_cake(update: Update, context: CallbackContext):
 
 async def my_orders(update: Update, context: CallbackContext):
     await update.callback_query.answer()
-    orders = db.get_orders()
-    text = strings.get_my_orders(orders)
+    tg_id = update.effective_chat.id
+    user = db.find_user(tg_id)
+    if not user:
+        return
+
+    all_orders = db.get_orders()
+    text = ''
+    if user.role.title == 'customer':
+        orders = [order for order in all_orders if order.customer == user]
+        text = strings.get_my_orders(orders)
+
+    if user.role.title == 'admin':
+        orders = all_orders
+        text = strings.get_all_orders(orders)
 
     await update.callback_query.edit_message_text(
         text,
