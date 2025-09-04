@@ -43,6 +43,7 @@ class Callback(StrEnum):
     DELETE_USER = auto()
     MAKE_ADMIN = auto()
     MAKE_CUSTOMER = auto()
+    SHOW_USERS = auto()
 
 
 # Класс для создания строки коллбэков с параметрами 
