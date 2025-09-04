@@ -291,7 +291,7 @@ async def create_order(update: Update, context: CallbackContext):
         promocode,
         comment
     )
-
+    context.user_data['cart'] = []
     await update.callback_query.edit_message_text(
         strings.ORDER_CREATED,
         reply_markup=keyboards.get_back_to_menu(),
