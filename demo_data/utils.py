@@ -1,5 +1,7 @@
 import json
-from datetime import datetime, timedelta
+from demo_data.models import Order
+from utils import is_within_24_hours
+from tg_bot.settings import DELIVERY_WITHIN_24H_SURCHARGE
 
 
 def save_readable_json(dictionary, filepath):
@@ -57,7 +59,7 @@ def delete_from_json(json_filepath, pk):
     return True
 
 
-def calculate_order_total_price(order: 'Order') -> int:
+def calculate_order_total_price(order: Order) -> int:
     """Рассчитывает общую стоимость заказа с учетом:
     - стоимости всех тортов
     - срочной доставки (если менее 24 часов)
@@ -67,22 +69,11 @@ def calculate_order_total_price(order: 'Order') -> int:
     total = sum(cake.get_price() for cake in order.cakes)
 
     # Проверяем, является ли доставка срочной
-    if order.delivery_time:
-        delivery_datetime = datetime.combine(
-            order.delivery_date, 
-            order.delivery_time
-        )
-        time_until_delivery = delivery_datetime - datetime.now()
-
-        # Если доставка в течение 24 часов, добавляем наценку 20%
-        if time_until_delivery <= timedelta(hours=24):
-            total *= 1.2
+    if is_within_24_hours(order.delivery_date, order.delivery_time):
+        total = total * (1 + DELIVERY_WITHIN_24H_SURCHARGE / 100)
 
     # Применяем скидку по промокоду
     if order.promocode and order.promocode.is_active:
-        if order.promocode.title == "ПЕРВЫЙ ЗАКАЗ":
-            total *= 0.9  # 10% скидка
-        elif order.promocode.title == "ДЕНЬ РОЖДЕНИЯ":
-            total *= 0.85  # 15% скидка
+        total = total  * (1 - order.promocode.discount / 100)
 
-    return round(total)
+    return total
