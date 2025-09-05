@@ -459,3 +459,25 @@ def show_pricelist(
     text += show_ingredients('Ягоды', berries)
 
     return text
+
+
+def get_users_list(users: list[User]):
+    text = 'Список пользователей: \n\n'
+
+    for user in users:
+        text += (
+            f'Имя пользователя: {user.full_name}\n'
+            f'Телефон: {user.phone}\n\n'
+        )
+    
+    return text
+
+
+def get_user_details(user: User, user_orders: list[Order]):
+    return (
+        f'Имя пользователя: {user.full_name}\n'
+        f'Роль: {user.role.title}\n'
+        f'Телефон: {user.phone}\n'
+        f'Адрес: {user.address}\n'
+        f'Количество заказов: {len(user_orders)}\n'
+    )
