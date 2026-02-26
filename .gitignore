@@ -93,3 +93,4 @@ media/
 ### Custom ###
 test.py
 *.json
+*.docx

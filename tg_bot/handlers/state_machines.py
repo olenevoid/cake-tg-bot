@@ -13,73 +13,49 @@ from tg_bot.handlers import main_menu, registration, order_cake, create_cake
 def get_create_cake_conversation_handler():
     return ConversationHandler(
         entry_points=[
-            CallbackQueryHandler(
-                create_cake.select_layers,
-                Callback.CREATE_CAKE
-            ),
+            CallbackQueryHandler(create_cake.select_layers, Callback.CREATE_CAKE),
         ],
         states={
             State.CREATE_CAKE: [
                 CallbackQueryHandler(
-                    create_cake.start_creating_cake,
-                    Callback.CREATE_CAKE
+                    create_cake.start_creating_cake, Callback.CREATE_CAKE
+                ),
+                CallbackQueryHandler(create_cake.select_layers, Callback.SELECT_LAYERS),
+                CallbackQueryHandler(
+                    create_cake.save_layers, get_pattern(Callback.SAVE_LAYERS)
                 ),
                 CallbackQueryHandler(
-                    create_cake.select_layers,
-                    Callback.SELECT_LAYERS
+                    create_cake.save_shape, get_pattern(Callback.ADD_SHAPE)
                 ),
                 CallbackQueryHandler(
-                    create_cake.save_layers,
-                    get_pattern(Callback.SAVE_LAYERS)
+                    create_cake.save_topping, get_pattern(Callback.ADD_TOPPING)
+                ),
+                CallbackQueryHandler(create_cake.select_berry, Callback.SELECT_BERRY),
+                CallbackQueryHandler(create_cake.select_decor, Callback.SELECT_DECOR),
+                CallbackQueryHandler(
+                    create_cake.save_berry, get_pattern(Callback.ADD_BERRY)
                 ),
                 CallbackQueryHandler(
-                    create_cake.save_shape,
-                    get_pattern(Callback.ADD_SHAPE)
+                    create_cake.save_decor, get_pattern(Callback.ADD_DECOR)
                 ),
-                CallbackQueryHandler(
-                    create_cake.save_topping,
-                    get_pattern(Callback.ADD_TOPPING)
-                ),
-                CallbackQueryHandler(
-                    create_cake.select_berry,
-                    Callback.SELECT_BERRY
-                ),
-                CallbackQueryHandler(
-                    create_cake.select_decor,
-                    Callback.SELECT_DECOR
-                ),
-                CallbackQueryHandler(
-                    create_cake.save_berry,
-                    get_pattern(Callback.ADD_BERRY)
-                ),
-                CallbackQueryHandler(
-                    create_cake.save_decor,
-                    get_pattern(Callback.ADD_DECOR)
-                ),
-                CallbackQueryHandler(
-                    create_cake.input_sign,
-                    Callback.ADD_SIGN
-                ),
-                CallbackQueryHandler(
-                    create_cake.save_custom_cake,
-                    Callback.YES
-                )
+                CallbackQueryHandler(create_cake.input_sign, Callback.ADD_SIGN),
+                CallbackQueryHandler(create_cake.save_custom_cake, Callback.YES),
             ],
-            State.INPUT_SIGN: [
-                MessageHandler(filters.TEXT, create_cake.add_sign)
-            ]
+            State.INPUT_SIGN: [MessageHandler(filters.TEXT, create_cake.add_sign)],
         },
         map_to_parent={
             State.MAIN_MENU: State.MAIN_MENU,
-            State.ORDER_CAKE: State.ORDER_CAKE
+            State.ORDER_CAKE: State.ORDER_CAKE,
         },
         fallbacks=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.show_main_menu,
-                get_pattern(Callback.MAIN_MENU)
-            )
-        ]
+                main_menu.show_main_menu, get_pattern(Callback.MAIN_MENU)
+            ),
+        ],
+        per_message=False,
+        per_chat=True,
+        per_user=True,
     )
 
 
@@ -87,130 +63,91 @@ def get_order_cake_conversation_handler():
     return ConversationHandler(
         entry_points=[
             CallbackQueryHandler(
-                order_cake.show_cakes,
-                get_pattern(Callback.SHOW_CAKES)
+                order_cake.show_cakes, get_pattern(Callback.SHOW_CAKES)
             ),
-            CallbackQueryHandler(
-                order_cake.show_cart,
-                get_pattern(Callback.SHOW_CART)
-            )
+            CallbackQueryHandler(order_cake.show_cart, get_pattern(Callback.SHOW_CART)),
         ],
         states={
             State.SHOW_CAKES: [
                 CallbackQueryHandler(
-                    order_cake.show_cake,
-                    get_pattern(Callback.SHOW_CAKE)
+                    order_cake.show_cake, get_pattern(Callback.SHOW_CAKE)
                 ),
                 CallbackQueryHandler(
-                    order_cake.show_cart,
-                    get_pattern(Callback.SHOW_CART)
-                )
+                    order_cake.show_cart, get_pattern(Callback.SHOW_CART)
+                ),
             ],
             State.SHOW_CAKE: [
+                CallbackQueryHandler(order_cake.show_cakes, get_pattern(Callback.BACK)),
                 CallbackQueryHandler(
-                    order_cake.show_cakes,
-                    get_pattern(Callback.BACK)
+                    order_cake.add_to_cart, get_pattern(Callback.ADD_TO_CART)
                 ),
-                CallbackQueryHandler(
-                    order_cake.add_to_cart,
-                    get_pattern(Callback.ADD_TO_CART)
-                )
             ],
             State.SHOW_CART: [
-                CallbackQueryHandler(
-                    order_cake.show_cakes,
-                    get_pattern(Callback.BACK)
-                ),
+                CallbackQueryHandler(order_cake.show_cakes, get_pattern(Callback.BACK)),
                 CallbackQueryHandler(
                     order_cake.remove_cake_from_cart,
-                    get_pattern(Callback.REMOVE_FROM_CART)
+                    get_pattern(Callback.REMOVE_FROM_CART),
                 ),
                 CallbackQueryHandler(
-                    order_cake.clear_cart,
-                    get_pattern(Callback.CLEAR_CART)
+                    order_cake.clear_cart, get_pattern(Callback.CLEAR_CART)
                 ),
                 CallbackQueryHandler(
-                    order_cake.select_date,
-                    get_pattern(Callback.CREATE_ORDER)
+                    order_cake.select_date, get_pattern(Callback.CREATE_ORDER)
                 ),
             ],
             State.CREATE_ORDER: [
+                CallbackQueryHandler(order_cake.input_promocode, Callback.ADD_PROMO),
+                CallbackQueryHandler(order_cake.input_comment, Callback.ADD_COMMENT),
+                CallbackQueryHandler(order_cake.select_date, Callback.SELECT_DATE),
                 CallbackQueryHandler(
-                    order_cake.input_promocode,
-                    Callback.ADD_PROMO
+                    order_cake.add_date, get_pattern(Callback.ADD_DATE)
                 ),
                 CallbackQueryHandler(
-                    order_cake.input_comment,
-                    Callback.ADD_COMMENT
+                    order_cake.add_time, get_pattern(Callback.ADD_TIME)
                 ),
-                CallbackQueryHandler(
-                    order_cake.select_date,
-                    Callback.SELECT_DATE
-                ),
-                CallbackQueryHandler(
-                    order_cake.add_date,
-                    get_pattern(Callback.ADD_DATE)
-                ),
-                CallbackQueryHandler(
-                    order_cake.add_time,
-                    get_pattern(Callback.ADD_TIME)
-                ),
-                CallbackQueryHandler(
-                    order_cake.create_order,
-                    Callback.YES
-                )
+                CallbackQueryHandler(order_cake.create_order, Callback.YES),
             ],
             State.INPUT_PROMOCODE: [
                 MessageHandler(filters.TEXT, order_cake.validate_promocode)
             ],
-            State.INPUT_COMMENT: [
-                MessageHandler(filters.TEXT, order_cake.add_comment)
-            ]
+            State.INPUT_COMMENT: [MessageHandler(filters.TEXT, order_cake.add_comment)],
         },
         map_to_parent={
             State.MAIN_MENU: State.MAIN_MENU,
-            State.REGISTRATION: State.REGISTRATION
+            State.REGISTRATION: State.REGISTRATION,
         },
         fallbacks=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.show_main_menu,
-                get_pattern(Callback.MAIN_MENU)
-            )
-        ]
+                main_menu.show_main_menu, get_pattern(Callback.MAIN_MENU)
+            ),
+        ],
+        per_message=False,
+        per_chat=True,
+        per_user=True,
     )
 
 
 def get_registration_conversation_handler():
     return ConversationHandler(
         entry_points=[
+            CallbackQueryHandler(main_menu.show_main_menu, get_pattern(Callback.NO)),
+            CallbackQueryHandler(registration.input_name, get_pattern(Callback.YES)),
             CallbackQueryHandler(
-                main_menu.show_main_menu,
-                get_pattern(Callback.NO)
+                registration.send_personal_data_consent, Callback.DOWNLOAD
             ),
-            CallbackQueryHandler(
-                registration.input_name,
-                get_pattern(Callback.YES)
-            ),
-            CallbackQueryHandler(
-                registration.send_personal_data_consent,
-                Callback.DOWNLOAD
-            )
         ],
         states={
             State.PERSONAL_DATA_PROCESSING: [
                 CallbackQueryHandler(
-                    main_menu.show_main_menu,
-                    get_pattern(Callback.NO)
+                    main_menu.show_main_menu, get_pattern(Callback.NO)
                 ),
                 CallbackQueryHandler(
-                    registration.input_name,
-                    get_pattern(Callback.YES)
+                    registration.input_name, get_pattern(Callback.YES)
                 ),
                 CallbackQueryHandler(
-                    registration.send_personal_data_consent,
-                    Callback.DOWNLOAD
-                )
+                    registration.send_personal_data_consent, Callback.DOWNLOAD
+                ),
             ],
             State.INPUT_NAME: [
                 MessageHandler(filters.TEXT, registration.validate_name),
@@ -222,24 +159,23 @@ def get_registration_conversation_handler():
                 MessageHandler(filters.TEXT, registration.validate_address)
             ],
             State.CONFIRM_SIGNUP: [
-                CallbackQueryHandler(
-                    registration.signup_customer,
-                    Callback.YES
-                ),
+                CallbackQueryHandler(registration.signup_customer, Callback.YES),
                 CallbackQueryHandler(registration.input_name, Callback.REDO),
-            ]
+            ],
         },
         map_to_parent={
             State.MAIN_MENU: State.MAIN_MENU,
-            State.ORDER_CAKE: State.ORDER_CAKE
+            State.ORDER_CAKE: State.ORDER_CAKE,
         },
         fallbacks=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.show_main_menu,
-                get_pattern(Callback.MAIN_MENU)
-            )
-        ]
+                main_menu.show_main_menu, get_pattern(Callback.MAIN_MENU)
+            ),
+        ],
+        per_message=False,
+        per_chat=True,
+        per_user=True,
     )
 
 
@@ -253,58 +189,43 @@ def get_main_conversation_handler():
         entry_points=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.show_main_menu,
-                get_pattern(Callback.MAIN_MENU)
-            )
+                main_menu.show_main_menu, get_pattern(Callback.MAIN_MENU)
+            ),
         ],
         states={
             State.MAIN_MENU: [
                 CallbackQueryHandler(
-                    main_menu.order_cake,
-                    get_pattern(Callback.ORDER_CAKE)
+                    main_menu.order_cake, get_pattern(Callback.ORDER_CAKE)
                 ),
                 CallbackQueryHandler(
-                    main_menu.show_pricelist,
-                    get_pattern(Callback.SHOW_PRICELIST)
+                    main_menu.show_pricelist, get_pattern(Callback.SHOW_PRICELIST)
                 ),
                 CallbackQueryHandler(
-                    main_menu.my_orders,
-                    get_pattern(Callback.MY_ORDERS)
+                    main_menu.my_orders, get_pattern(Callback.MY_ORDERS)
                 ),
                 CallbackQueryHandler(
-                    registration.start_registration,
-                    get_pattern(Callback.SIGNUP)
+                    registration.start_registration, get_pattern(Callback.SIGNUP)
                 ),
+                CallbackQueryHandler(main_menu.show_users, Callback.SHOW_USERS),
                 CallbackQueryHandler(
-                    main_menu.show_users,
-                    Callback.SHOW_USERS
+                    main_menu.show_user, get_pattern(Callback.SHOW_USER)
                 ),
-                CallbackQueryHandler(
-                    main_menu.show_user,
-                    get_pattern(Callback.SHOW_USER)
-                )
             ],
             State.REGISTRATION: [registration_level],
-            State.ORDER_CAKE: [order_cake_level, create_cake_level]
-
+            State.ORDER_CAKE: [order_cake_level, create_cake_level],
         },
         fallbacks=[
             CommandHandler("start", main_menu.start),
             CallbackQueryHandler(
-                main_menu.show_main_menu,
-                get_pattern(Callback.MAIN_MENU)
+                main_menu.show_main_menu, get_pattern(Callback.MAIN_MENU)
             ),
             CallbackQueryHandler(
-                registration.delete_user,
-                get_pattern(Callback.DELETE_USER)
+                registration.delete_user, get_pattern(Callback.DELETE_USER)
             ),
-            CallbackQueryHandler(
-                main_menu.change_role,
-                Callback.MAKE_CUSTOMER
-            ),
-            CallbackQueryHandler(
-                main_menu.change_role,
-                Callback.MAKE_ADMIN
-            )
-        ]
+            CallbackQueryHandler(main_menu.change_role, Callback.MAKE_CUSTOMER),
+            CallbackQueryHandler(main_menu.change_role, Callback.MAKE_ADMIN),
+        ],
+        per_message=False,
+        per_chat=True,
+        per_user=True,
     )
